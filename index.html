@@ -9,7 +9,6 @@
             --primary: #7078D0;
             --secondary: #7888D0;
             --accent: #00a8cc;
-            /* New premium subtle gradient background colors */
             --bg-gradient-start: #f5f7fb;
             --bg-gradient-end: #eef2fa;
             --text-dark: #333333;
@@ -31,11 +30,9 @@
         body {
             color: var(--text-dark);
             line-height: 1.6;
-            /* Light premium background to provide depth */
             background-color: #f5f7fb; 
         }
 
-        /* Fixed Navigation Bar Styles */
         .navbar {
             background-color: var(--secondary);
             position: sticky;
@@ -153,29 +150,20 @@
 
         section {
             margin-bottom: 40px;
-            /* Changed the big white blocks to the secondary brand color */
             background: var(--secondary); 
             padding: 45px;
             border-radius: 16px; 
             box-shadow: 0 10px 30px rgba(112, 120, 208, 0.15); 
             scroll-margin-top: 90px; 
-            /* Changes all standard text inside the block to white for perfect readability */
             color: var(--text-light); 
         }
 
-        /* Updates headings and paragraphs inside the sections to look sharp against the new background */
         section h2 {
             color: var(--text-light) !important;
         }
 
         section p {
             color: #f0f4f9 !important;
-        }
-
-        .empty-state {
-            color: #e2e8f0 !important;
-            background: rgba(255, 255, 255, 0.1) !important;
-            border-left: 3px dashed #e2e8f0 !important;
         }
 
         h2 {
@@ -206,11 +194,9 @@
         }
 
         .card {
-            /* Gives the inner cards a soft, beautiful secondary color tint background */
             background: #fdfdff;
             padding: 30px;
             border-radius: 12px;
-            /* Clean borders using your manager's exact primary color choice */
             border: 1px solid rgba(112, 120, 208, 0.15);
             border-top: 4px solid var(--primary);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.01);
@@ -220,7 +206,6 @@
         .card:hover {
             transform: translateY(-8px);
             box-shadow: 0 16px 32px var(--card-hover-shadow);
-            /* Card border turns fully solid on hover interaction */
             border-color: var(--secondary); 
         }
 
@@ -228,6 +213,12 @@
             color: #3b4278;
             margin-bottom: 12px;
             font-size: 1.3rem;
+        }
+
+        .card p {
+            color: #555555 !important;
+            font-size: 0.95rem;
+            line-height: 1.5;
         }
 
         .contact-wrapper {
@@ -247,12 +238,12 @@
         }
 
         .empty-state {
-            color: #888;
+            color: #e2e8f0 !important;
+            background: rgba(255, 255, 255, 0.1) !important;
+            border-left: 3px dashed #e2e8f0 !important;
             font-style: italic;
-            background: #f8fafc;
             padding: 20px;
             border-radius: 6px;
-            border-left: 3px dashed #cbd5e1;
         }
 
         footer {
@@ -268,7 +259,7 @@
 </head>
 <body>
 
-    <!-- Sticky Header Menu Navigation Bar -->
+    <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="nav-container">
             <a href="#" class="nav-logo">Technocrat Blues</a>
@@ -291,10 +282,10 @@
 
     <div class="container">
         
-        <!-- About Us & Core Offerings Layout -->
+        <!-- Core Offerings Layout -->
         <section id="about">
             <h2>Our Core Offerings</h2>
-            <p style="margin-bottom: 25px; font-size: 1.15rem; color: #555; font-weight: 300;">Transforming ideas into robust digital solutions focused on software engineering and product architecture. Driven by motivation and commitment.</p>
+            <p style="margin-bottom: 25px; font-size: 1.15rem; color: #f0f4f9 !important; font-weight: 300;">Transforming ideas into robust digital solutions focused on software engineering and product architecture. Driven by motivation and commitment.</p>
             
             <div class="grid">
                 <div class="card">
@@ -316,18 +307,16 @@
             </div>
         </section>
 
-        <!-- Our Clients Portfolio Space Layout -->
         <section id="clients">
             <h2>Our Clients</h2>
             <p class="empty-state">This section is currently empty.</p>
         </section>
 
-        <!-- Interactive Form Contact Segment Layout -->
         <section id="contact">
             <h2>Contact Us</h2>
             <div class="contact-wrapper">
                 <div>
-                    <p style="color: #666; margin-bottom: 15px;">Please use our official form to drop your query:</p>
+                    <p style="color: #f0f4f9 !important; margin-bottom: 15px;">Please use our official form to drop your query:</p>
                     <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeYvvgZ-gc8tkRQ__UgPubGUUi5UCtRrVwL8j47oB98zZo2EA/viewform?embedded=true" width="100%" height="600" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
                 </div>
                 
@@ -341,7 +330,6 @@
 
     </div>
 
-    <!-- Corporate Information Footer Info Layer -->
     <footer>
         Copyright © 2026 Technocrat Blues Pvt Ltd - All Rights Reserved.
     </footer>
