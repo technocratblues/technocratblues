@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technocrat Blues | Scalable Digital Experiences</title>
+    <style>
+        :root {
+            --primary: #7078D0;
+            --secondary: #7888D0;
+            --accent: #00a8cc;
+            /* New premium subtle gradient background colors */
+            --bg-gradient-start: #f5f7fb;
+            --bg-gradient-end: #eef2fa;
+            --text-dark: #333333;
+            --text-light: #ffffff;
+            --card-hover-shadow: rgba(112, 120, 208, 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            color: var(--text-dark);
+            line-height: 1.6;
+            /* Light premium background to provide depth */
+            background-color: #f5f7fb; 
+        }
+
+        /* Fixed Navigation Bar Styles */
+        .navbar {
+            background-color: var(--secondary);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .nav-logo {
+            color: var(--text-light);
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav-links a {
+            color: #e2e8f0;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+            position: relative;
+            padding-bottom: 4px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--text-light);
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+        .nav-links a:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-light);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--secondary) 0%, #4a54a4 100%);
+            color: var(--text-light);
+            text-align: center;
+            padding: 90px 20px;
+            box-shadow: inset 0 -50px 50px -50px rgba(0,0,0,0.2);
+        }
+
+        .logo-placeholder {
+            width: 160px;
+            height: 160px;
+            background-color: #f0f4f9; 
+            border: 3px solid var(--text-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px auto;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .logo-placeholder:hover {
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        .logo-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; 
+            padding: 12px;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        header p {
+            font-size: 1.25rem;
+            color: #f0f4f9;
+            max-width: 720px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+
+        section {
+            margin-bottom: 40px;
+            /* Changed the big white blocks to the secondary brand color */
+            background: var(--secondary); 
+            padding: 45px;
+            border-radius: 16px; 
+            box-shadow: 0 10px 30px rgba(112, 120, 208, 0.15); 
+            scroll-margin-top: 90px; 
+            /* Changes all standard text inside the block to white for perfect readability */
+            color: var(--text-light); 
+        }
+
+        /* Updates headings and paragraphs inside the sections to look sharp against the new background */
+        section h2 {
+            color: var(--text-light) !important;
+        }
+
+        section p {
+            color: #f0f4f9 !important;
+        }
+
+        .empty-state {
+            color: #e2e8f0 !important;
+            background: rgba(255, 255, 255, 0.1) !important;
+            border-left: 3px dashed #e2e8f0 !important;
+        }
+
+        h2 {
+            color: #3b4278;
+            font-size: 2.1rem;
+            margin-bottom: 25px;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 8px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 4px;
+            width: 60px;
+            background-color: var(--primary);
+            border-radius: 2px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .card {
+            /* Gives the inner cards a soft, beautiful secondary color tint background */
+            background: #fdfdff;
+            padding: 30px;
+            border-radius: 12px;
+            /* Clean borders using your manager's exact primary color choice */
+            border: 1px solid rgba(112, 120, 208, 0.15);
+            border-top: 4px solid var(--primary);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.01);
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 32px var(--card-hover-shadow);
+            /* Card border turns fully solid on hover interaction */
+            border-color: var(--secondary); 
+        }
+
+        .card h3 {
+            color: #3b4278;
+            margin-bottom: 12px;
+            font-size: 1.3rem;
+        }
+
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .contact-wrapper { grid-template-columns: 1fr; }
+            .nav-links { display: none; } 
+        }
+
+        .contact-info p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .empty-state {
+            color: #888;
+            font-style: italic;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 3px dashed #cbd5e1;
+        }
+
+        footer {
+            background-color: #2c3159;
+            color: #cbd5e1;
+            text-align: center;
+            padding: 25px 20px;
+            font-size: 0.95rem;
+            margin-top: 60px;
+            letter-spacing: 0.3px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sticky Header Menu Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">Technocrat Blues</a>
+            <div class="nav-links">
+                <a href="#about">Our Offerings</a>
+                <a href="#clients">Our Clients</a>
+                <a href="#contact">Contact Us</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Hero Brand Space Section -->
+    <header>
+        <div class="logo-placeholder">
+            <img src="logo.png" alt="Technocrat Blues Logo" onerror="this.style.display='none'; this.parentNode.innerText='[Logo Here]'">
+        </div>
+        <h1>Technocrat Blues Pvt Ltd</h1>
+        <p>Building scalable digital experiences with innovation, reliability, and modern technology solutions.</p>
+    </header>
+
+    <div class="container">
+        
+        <!-- About Us & Core Offerings Layout -->
+        <section id="about">
+            <h2>Our Core Offerings</h2>
+            <p style="margin-bottom: 25px; font-size: 1.15rem; color: #555; font-weight: 300;">Transforming ideas into robust digital solutions focused on software engineering and product architecture. Driven by motivation and commitment.</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <h3>📱 Application Development</h3>
+                    <p>Modern Web & Mobile Application Development.</p>
+                </div>
+                <div class="card">
+                    <h3>⚙️ Product Engineering</h3>
+                    <p>Digital Product Engineering & Architecture.</p>
+                </div>
+                <div class="card">
+                    <h3>📈 Scalable Tech</h3>
+                    <p>Delivering scalable technology consulting services.</p>
+                </div>
+                <div class="card">
+                    <h3>🤝 Client-Centric</h3>
+                    <p>Reliable Delivery with Client-Centric Approach.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Clients Portfolio Space Layout -->
+        <section id="clients">
+            <h2>Our Clients</h2>
+            <p class="empty-state">This section is currently empty.</p>
+        </section>
+
+        <!-- Interactive Form Contact Segment Layout -->
+        <section id="contact">
+            <h2>Contact Us</h2>
+            <div class="contact-wrapper">
+                <div>
+                    <p style="color: #666; margin-bottom: 15px;">Please use our official form to drop your query:</p>
+                    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeYvvgZ-gc8tkRQ__UgPubGUUi5UCtRrVwL8j47oB98zZo2EA/viewform?embedded=true" width="100%" height="600" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+                </div>
+                
+                <div class="contact-info">
+                    <h3>📍 Corporate Address</h3>
+                    <p style="margin-top: 15px;"><strong>Technocrat Blues Pvt Ltd</strong></p>
+                    <p>Baner, Pune,<br>Maharashtra - 411045</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Corporate Information Footer Info Layer -->
+    <footer>
+        Copyright © 2026 Technocrat Blues Pvt Ltd - All Rights Reserved.
+    </footer>
+
+</body>
+</html>
