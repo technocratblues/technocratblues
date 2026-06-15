@@ -1,14 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { NAV_LINKS } from '../../assets';
 gsap.registerPlugin(ScrollTrigger);
 
-const LINKS = [
-    { label: 'Home',     href: '#home'     },
-    { label: 'About',    href: '#about'    },
-    { label: 'Services', href: '#services' },
-    { label: 'Clients',  href: '#clients'  },
-];
+
+const LINKS = NAV_LINKS.map(link => ({
+    label: link.label,
+    href:
+        link.label.toLowerCase() === 'home'
+            ? '#home'
+            : `#${link.label.toLowerCase()}`
+}));
 
 function scrollTo(href) {
     const id = href.replace('#', '');
@@ -34,7 +37,7 @@ function scrollTo(href) {
 }
 
 export default function Navbar() {
-    const navRef  = useRef(null);
+    const navRef = useRef(null);
     const pillRef = useRef(null);
     const [activeSection, setActiveSection] = useState('home');
 
@@ -48,15 +51,15 @@ export default function Navbar() {
 
     /* ── Hide / reveal + shadow on scroll ── */
     useEffect(() => {
-        let lastY   = window.scrollY;
-        let hidden  = false;
+        let lastY = window.scrollY;
+        let hidden = false;
         let ticking = false;
 
         const onScroll = () => {
             if (ticking) return;
             ticking = true;
             requestAnimationFrame(() => {
-                const y     = window.scrollY;
+                const y = window.scrollY;
                 const delta = y - lastY;
 
                 gsap.to(pillRef.current, {
@@ -73,7 +76,7 @@ export default function Navbar() {
                     hidden = false;
                 }
 
-                lastY   = y;
+                lastY = y;
                 ticking = false;
             });
         };
@@ -85,8 +88,8 @@ export default function Navbar() {
     /* ── Active section tracking ── */
     useEffect(() => {
         const NAV_HEIGHT = 80;       // navbar height in px
-        const BUFFER     = 40;       // extra px — prevents early activation of short/nested sections
-        const TRIGGER    = NAV_HEIGHT + BUFFER;
+        const BUFFER = 40;       // extra px — prevents early activation of short/nested sections
+        const TRIGGER = NAV_HEIGHT + BUFFER;
 
         const getActiveId = () => {
             const sections = LINKS
@@ -127,12 +130,12 @@ export default function Navbar() {
             {/* Pill */}
             <div
                 ref={pillRef}
-                className="pointer-events-auto w-[calc(100%-2rem)] max-w-5xl"
+                className="pointer-events-auto w-[calc(100%-2rem)] max-w-5xl "
                 style={{
-                    padding    : '1.5px',
-                    background : 'linear-gradient(135deg, rgba(26,71,232,0.5) 0%, rgba(160,180,255,0.22) 45%, rgba(255,255,255,0.12) 60%, rgba(26,71,232,0.38) 100%)',
+                    padding: '1.5px',
+                    background: 'linear-gradient(135deg, rgba(26,71,232,0.5) 0%, rgba(160,180,255,0.22) 45%, rgba(255,255,255,0.12) 60%, rgba(26,71,232,0.38) 100%)',
                     borderRadius: '1rem',
-                    boxShadow  : 'var(--shadow-nav)',
+                    boxShadow: 'var(--shadow-nav)',
                 }}
             >
                 <div className="rounded-[calc(1rem-1.5px)] glass px-3 sm:px-5">
@@ -146,7 +149,7 @@ export default function Navbar() {
                                     <button
                                         key={label}
                                         onClick={() => scrollTo(href)}
-                                        className={`nav-link whitespace-nowrap text-xs sm:text-[0.905rem] px-2.5 sm:px-4 py-2
+                                        className={`nav-link whitespace-nowrap text-xs sm:text-[0.905rem] px-2.5 sm:px-4 py-2 cursor-pointer
                                             ${activeSection === id ? 'text-brand nav-active' : 'text-[#1a1a2e]'}`}
                                     >
                                         {label}
@@ -162,7 +165,7 @@ export default function Navbar() {
                         >
                             Let's talk
                             <svg width="12" height="12" viewBox="0 0 14 14" fill="none" className="sm:w-3.5 sm:h-3.5">
-                                <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                                <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
                         </button>
 

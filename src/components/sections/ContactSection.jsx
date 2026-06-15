@@ -193,13 +193,6 @@ export default function ContactSection() {
                             </div>
                         ) : (
                             <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
-                                <div className="mb-1">
-                                    <h3 className="font-display text-xl font-black text-(--color-ink)">Send us your query</h3>
-                                    <p className="text-xs text-(--color-ink-pale) mt-1">
-                                        Responses are captured in our team sheet — we'll reply within 24h.
-                                    </p>
-                                </div>
-
                                 {/* Throttle warning */}
                                 {isThrottled && (
                                     <div className="flex items-start gap-2 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2.5">
@@ -305,10 +298,6 @@ export default function ContactSection() {
                                         : 'Submit Query →'
                                     }
                                 </button>
-
-                                <p className="text-center text-xs text-(--color-ink-dim)">
-                                    Your details are stored securely in our team's Google Sheet.
-                                </p>
                             </form>
                         )}
                     </div>

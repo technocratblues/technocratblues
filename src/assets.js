@@ -1,10 +1,9 @@
 // ── Brand ────────────────────────────────────────────────────────────────────
 export const BRAND = {
-  name: 'technocratblues',
-  nameColored: { base: 'Technocrat', accent: 'blues' },
+  name: 'TechnocratBlues',
+  nameColored: { base: 'Technocrat', accent: 'Blues' },
   tagline: 'Engineering & Technology Consulting',
   company: 'Technocrat Blues Pvt Ltd',
-  founder: { name: 'Swati Goel', title: 'Founder & CEO' },
   address: {
     line1: 'Baner, Pune, Maharashtra — 411045',
     line2: 'India',
@@ -21,11 +20,12 @@ export const LOGO = {
 };
 
 export const NAV_LINKS = [
-  { label: 'Home',     to: '/' },
-  { label: 'Services', to: '/services' },
-  { label: 'About',    to: '/about' },
-  { label: 'Process',  to: '/process' },
-  { label: 'Contact',  to: '/contact' },
+  { label: 'Home', href: '#home' },
+  { label: 'About', href: '#about' },
+  { label: 'Services', href: '#services' },
+  { label: 'Clients', href: '#clients' },
+  { label: 'Careers', href: '#careers' },
+  { label: 'Contact', href: '#contact' },
 ];
 
 // ── Hero ─────────────────────────────────────────────────────────────────────
@@ -168,4 +168,55 @@ export const CAPABILITY_DETAILS = {
     color: { from: '#F59E0B', to: '#FBBF24' },
     accentBg: 'rgba(245, 158, 11, 0.07)',
   },
+};
+
+export const CAREERS = {
+  badge: "We Are Hiring",
+  role: "Full Stack Developer",
+  experience: "3–6 Years",
+  description: "We are looking for a passionate Full Stack Developer...",
+
+  frontend: [
+    {
+      title: "React",
+      description: "Build dynamic and responsive user interfaces"
+    },
+    {
+      title: "TypeScript",
+      description: "Write safe, scalable and maintainable code"
+    },
+    {
+      title: "Tailwind CSS",
+      description: "Create beautiful and consistent UI"
+    }
+  ],
+
+  backend: [
+    {
+      title: "Spring Boot",
+      description: "Develop scalable REST APIs"
+    },
+    {
+      title: "Java",
+      description: "Build reliable backend systems"
+    },
+    {
+      title: "PostgreSQL",
+      description: "Design efficient databases"
+    }
+  ],
+
+  benefits: [
+    "Impactful Projects",
+    "Collaborative Team",
+    "Learning Opportunities",
+    "Flexible Work Environment",
+    "Competitive Benefits"
+  ],
+
+  apply: {
+    title: "Apply Now",
+    email: "careers@technocratblues.com",
+    tagline: "Let's build the future together!"
+  }
 };
