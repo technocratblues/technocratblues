@@ -1,0 +1,361 @@
+/* =========================================================================
+   TYPOGRAPHY AND VARIABLES INITIALIZATION
+   ========================================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --text-light: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.85);
+    --border-glass: rgba(255, 255, 255, 0.25);
+    --bg-glass: rgba(255, 255, 255, 0.12);
+    --bg-glass-hover: rgba(255, 255, 255, 0.22);
+}
+
+/* GLOBAL CONFIGURATION */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    
+    background: linear-gradient(135deg, #a3b0f5 0%, #7888D0 35%, #3b4fa3 70%, #1e2963 100%);
+    background-attachment: fixed;
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+/* Navbar Dynamic Blend Override */
+.navbar {
+    background: rgba(120, 136, 208, 0.35);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid var(--border-glass);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 24px;
+}
+
+.nav-logo {
+    color: var(--text-light);
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: -0.5px;
+}
+
+.nav-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    margin-left: 24px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: color 0.25s ease;
+}
+
+.nav-links a:hover {
+    color: var(--text-light);
+}
+
+/*   HERO / HEADER STYLES  */
+header {
+    text-align: center;
+    padding: 30px 24px 100px 24px; 
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background Wave Position Alignment */
+.wave-divider {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    transform: rotate(180deg);
+}
+
+.wave-divider svg {
+    position: relative;
+    display: block;
+    width: calc(135% + 1.3px);
+    height: 80px;
+}
+
+.wave-divider .shape-fill {
+    fill: rgba(255, 255, 255, 0.1); 
+}
+
+/* Flawless square logo layout */
+.logo-placeholder {
+    width: 110px !important; 
+    height: 110px !important;
+    border-radius: 16px !important; 
+    margin: 0 auto 20px auto !important; /* Reduced bottom margin */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    overflow: hidden !important;
+    display: block !important;
+}
+
+.logo-placeholder img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important; 
+}
+
+header h1 {
+    font-size: 3rem; 
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 10px; /* Reduced spacing */
+    text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+header p {
+    font-size: 1.15rem; /* Scaled down slightly */
+    color: var(--text-secondary);
+    max-width: 700px;
+    margin: 0 auto 30px auto; 
+    font-weight: 400;
+}
+
+/* INTERACTIVE HIGHLIGHTS GRID WITH BIGGER ICONS */
+.highlights-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Unified layout gaps */
+    flex-wrap: wrap;
+    max-width: 1150px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 5; 
+}
+
+.highlight-pill {
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 20px 16px; /* Shifted padding to make it compact vertically */
+    border-radius: 20px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    width: 220px; 
+    text-align: center;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.3s ease;
+}
+
+.highlight-pill:hover {
+    transform: translateY(-6px);
+    background: var(--bg-glass-hover);
+}
+
+/* Upscaled Icon configuration */
+.pill-icon {
+    font-size: 3rem !important; 
+    display: inline-block;
+    filter: drop-shadow(0 6px 12px rgba(0,0,0,0.12));
+    transition: transform 0.3s ease;
+}
+
+.highlight-pill:hover .pill-icon {
+    transform: scale(1.1) rotate(3deg); 
+}
+
+/* =========================================================================
+   CORE CONTAINER & MODULE BODY STYLES
+   ========================================================================= */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 24px;
+}
+
+section {
+    margin-bottom: 80px;
+    scroll-margin-top: 100px;
+}
+
+section h2 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 16px;
+}
+
+.section-desc {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+}
+
+/*  CORE OFFERINGS  */
+
+.list-layout {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important; 
+    gap: 32px !important; 
+}
+
+.list-card {
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 24px !important; 
+    padding: 48px 40px !important; 
+    display: flex !important;
+    flex-direction: column !important; 
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    gap: 24px !important;
+    min-height: 280px !important; 
+    transition: background 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.list-card:hover {
+    background: var(--bg-glass-hover);
+    transform: translateY(-6px);
+}
+
+.card-left {
+    display: flex !important;
+    flex-direction: column !important; 
+    align-items: flex-start !important;
+    gap: 16px !important;
+    width: 100%;
+}
+
+
+.card-icon {
+    font-size: 3rem !important; 
+    background: rgba(255, 255, 255, 0.1);
+    padding: 12px 20px;
+    border-radius: 16px;
+    display: inline-block;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+}
+
+.list-card h3 {
+    font-size: 1.9rem !important; 
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--text-light);
+}
+
+.card-desc {
+    font-size: 1.15rem !important; /* Spacious text layout descriptions */
+    color: var(--text-secondary);
+    text-align: left !important; 
+    line-height: 1.6;
+}
+
+
+/* CONTACT WRAPPER AND INPUT SYSTEM  */
+
+.contact-wrapper {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 32px;
+}
+
+.form-container {
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    padding: 32px;
+    border-radius: 20px;
+}
+
+.form-instruction {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    color: var(--text-secondary);
+}
+
+iframe {
+    border-radius: 12px;
+}
+
+.contact-info {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid var(--border-glass);
+    backdrop-filter: blur(16px);
+    padding: 40px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.contact-info h3 {
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+}
+
+.contact-info p {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+.empty-state {
+    background: var(--bg-glass);
+    border: 1px dashed var(--border-glass);
+    padding: 32px;
+    border-radius: 16px;
+    font-style: italic;
+    color: var(--text-secondary);
+}
+
+/* =========================================================================
+   FOOTER AND LAYOUT RESPONSIVENESS OVERRIDES
+   ========================================================================= */
+footer {
+    text-align: center;
+    padding: 40px 24px;
+    border-top: 1px solid var(--border-glass);
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-top: 40px;
+}
+
+@media (max-width: 900px) {
+    .list-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    .card-desc {
+        text-align: left;
+    }
+    .contact-wrapper {
+        grid-template-columns: 1fr;
+    }
+    header h1 {
+        font-size: 2.6rem;
+    }
+    .highlight-pill {
+        width: 100%;
+    }
+}
