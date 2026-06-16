@@ -44,10 +44,10 @@ export default function AboutSection() {
                         </span>
 
                         <h2 className="section-title font-display mb-5">
-                            Built for what&apos;s next.
+                            Built for what&apos;s next
                             <br />
                             <em className="font-serif italic text-brand not-italic">
-                                Grounded in what works.
+                                Grounded in what works
                             </em>
                         </h2>
 
@@ -58,7 +58,7 @@ export default function AboutSection() {
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
                             <p className="text-sm text-[color:var(--color-ink-soft)] leading-relaxed">
-                                We are a tech startup dedicated to building software that solves real-world problems. 
+                                We are a tech startup dedicated to building software that solves real-world problems
                                 From architecture to deployment, we handle every layer of the stack.
                             </p>
                             <p className="text-sm text-[color:var(--color-ink-soft)] leading-relaxed">

@@ -1,7 +1,7 @@
-// ── Brand ────────────────────────────────────────────────────────────────────
+// Brand
 export const BRAND = {
-  name: 'TechnocratBlues',
-  nameColored: { base: 'Technocrat', accent: 'Blues' },
+  name: 'Technocrat Blues',
+  nameColored: { base: 'Technocrat', accent: ' Blues' },
   tagline: 'Engineering & Technology Consulting',
   company: 'Technocrat Blues Pvt Ltd',
   address: {
@@ -11,7 +11,7 @@ export const BRAND = {
   },
   copyright: `Copyright © ${new Date().getFullYear()} Technocrat Blues Pvt Ltd — All Rights Reserved`,
 };
-//Logo 
+
 import logoImg from './assets/img/logo.jpg';
 
 export const LOGO = {
@@ -27,78 +27,77 @@ export const NAV_LINKS = [
   { label: 'Careers', href: '#careers' },
 ];
 
-// ── Hero ─────────────────────────────────────────────────────────────────────
+// Hero
 export const HERO_HEADLINE = {
   line1: 'Technology that',
   line2: 'moves business',
-  line3: 'forward.',
+  line3: 'forward',
   description:
-    'We turn ambitious ideas into dependable digital products, engineered to scale and built to endure.',
+    'We turn ambitious ideas into dependable digital products, engineered to scale and built to endure',
 };
 
-// ── Services ─────────────────────────────────────────────────────────────────
+// Services
 export const SERVICES = [
   {
     title: 'Web & Mobile Application Development',
-    desc: 'Modern, intuitive applications built for real users and evolving business needs.',
+    desc: 'Modern, intuitive applications built for real users and evolving business needs',
   },
   {
     title: 'Digital Product Engineering & Architecture',
-    desc: 'Thoughtful architecture and end-to-end engineering for products made to last.',
+    desc: 'Thoughtful architecture and end-to-end engineering for products made to last',
   },
   {
     title: 'Scalable Technology Solutions',
-    desc: 'Flexible technology foundations that perform today and grow with tomorrow.',
+    desc: 'Flexible technology foundations that perform today and grow with tomorrow',
   },
   {
     title: 'Reliable, Client-Centric Delivery',
-    desc: 'Clear communication, disciplined execution, and outcomes centered on your goals.',
+    desc: 'Clear communication, disciplined execution, and outcomes centered on your goals',
   },
 ];
 
-// ── Process Steps ─────────────────────────────────────────────────────────────
+// Process Steps
 export const PROCESS_STEPS = [
   {
     num: '01',
     title: 'Discovery & Strategy',
-    desc: 'We deep-dive into your business goals, user needs, and technical landscape. Out comes a crisp product brief and technical spec.',
+    desc: 'We deep-dive into your business goals, user needs, and technical landscape — out comes a crisp product brief and technical spec',
     duration: '1–2 weeks',
   },
   {
     num: '02',
     title: 'Architecture & Design',
-    desc: 'System architecture, data models, API contracts, and high-fidelity UI prototypes — all aligned before a line of code is written.',
+    desc: 'System architecture, data models, API contracts, and high-fidelity UI prototypes — all aligned before a line of code is written',
     duration: '1–3 weeks',
   },
   {
     num: '03',
     title: 'Agile Development',
-    desc: 'Two-week sprints with daily stand-ups, weekly demos, and continuous integration. You see progress constantly.',
+    desc: 'Two-week sprints with daily stand-ups, weekly demos, and continuous integration — you see progress constantly',
     duration: '4–16 weeks',
   },
   {
     num: '04',
     title: 'QA & Security Review',
-    desc: 'Unit, integration, and E2E testing. Performance profiling. Security audit. Zero-compromise quality gate before any release.',
+    desc: 'Unit, integration, and E2E testing — performance profiling, security audit, and a zero-compromise quality gate before any release',
     duration: '1–2 weeks',
   },
   {
     num: '05',
     title: 'Launch & Scale',
-    desc: 'Phased rollout with observability dashboards, on-call support, and post-launch optimization sprints.',
+    desc: 'Phased rollout with observability dashboards, on-call support, and post-launch optimization sprints',
     duration: 'Ongoing',
   },
 ];
 
-// ── About ─────────────────────────────────────────────────────────────────────
+// About
 export const ABOUT_VALUES = [
-  { label: 'Product Mindset',  desc: 'We think in outcomes, not just outputs — every line of code serves a purpose.' },
-  { label: 'Ownership',        desc: 'We treat your product like our own, with full accountability end to end.' },
-  { label: 'Speed & Craft',    desc: 'We move fast without cutting corners — quality and velocity, together.' },
+  { label: 'Product Mindset', desc: 'We think in outcomes, not just outputs — every line of code serves a purpose' },
+  { label: 'Ownership',       desc: 'We treat your product like our own, with full accountability end to end' },
+  { label: 'Speed & Craft',   desc: 'We move fast without cutting corners — quality and velocity, together' },
 ];
 
-// ── Contact / Google Form ─────────────────────────────────────────────────────
-
+// Contact
 export const CONTACT_FORM = {
   scriptUrl: import.meta.env.VITE_CONTACT_SCRIPT_URL,
 };
@@ -113,19 +112,20 @@ export const CONTACT_DOMAINS = [
   'Other',
 ];
 
-// ── Social / External Links ───────────────────────────────────────────────────
+// Social / External Links
 export const SOCIAL_LINKS = {
   github:   'https://github.com/technocratblues',
-  linkedin: 'https://linkedin.com/company/technocratblues',
+  linkedin: 'https://www.linkedin.com/company/technocrat-blues/posts/',
   twitter:  'https://twitter.com/technocratblues',
-  // imp note :--> Dont uncomment email 
-  // email:    'mailto:hello@technocratblues.com',
+  // imp note :--> Dont uncomment email
+  // email: 'mailto:hello@technocratblues.com',
 };
-// ── Capability Card Details ───────────────────────────────────────────────────
+
+// Capability Card Details
 export const CAPABILITY_DETAILS = {
   'Application Development': {
     emoji: '📱',
-    tagline: 'Ideas turned into products people actually use.',
+    tagline: 'Ideas turned into products people actually use',
     highlights: [
       'Web and mobile apps built for real workflows',
       'Clean interfaces, reliable backends',
@@ -136,7 +136,7 @@ export const CAPABILITY_DETAILS = {
   },
   'Product Engineering': {
     emoji: '⚙️',
-    tagline: 'Built right, not just built fast.',
+    tagline: 'Built right, not just built fast',
     highlights: [
       'Thoughtful architecture from the ground up',
       'Code that is maintainable, testable, extensible',
@@ -147,7 +147,7 @@ export const CAPABILITY_DETAILS = {
   },
   'Scalable Tech': {
     emoji: '📈',
-    tagline: 'Systems that grow with your business.',
+    tagline: 'Systems that grow with your business',
     highlights: [
       'Foundations designed to handle more over time',
       'Modern cloud-friendly infrastructure choices',
@@ -158,71 +158,48 @@ export const CAPABILITY_DETAILS = {
   },
   'Client-Centric': {
     emoji: '🤝',
-    tagline: 'Your goals drive every decision we make.',
+    tagline: 'Your goals drive every decision we make',
     highlights: [
       'Close collaboration throughout the process',
       'Clear communication, no surprises',
       'Outcomes that align with your business',
     ],
-    color: { from: '#F59E0B', to: '#FBBF24' },
-    accentBg: 'rgba(245, 158, 11, 0.07)',
+    color: { from: '#7078D0', to: '#6B91FF' },
+    accentBg: 'rgba(112, 120, 208, 0.07)',
   },
 };
 
+// Careers
 export const CAREERS = {
-  badge: "We Are Hiring",
-  role: "Full Stack Developer",
-  experience: "3–6 Years",
-  description: "We are looking for a passionate Full Stack Developer...",
+  badge: 'We Are Hiring',
+  role: 'Full Stack Developer',
+  experience: '3–6 Years',
+  description: 'We are looking for a passionate Full Stack Developer',
 
   apply: {
-    title: "Apply Now",
-    email: "careers@technocratblues.com",
+    title: 'Apply Now',
+    email: 'careers@technocratblues.com',
     url: `mailto:careers@technocratblues.com`,
-    tagline: "Let's build the future together!"
+    tagline: "Let's build the future together",
   },
 
   frontend: [
-    {
-      title: "React",
-      description: "Build dynamic and responsive user interfaces"
-    },
-    {
-      title: "TypeScript",
-      description: "Write safe, scalable and maintainable code"
-    },
-    {
-      title: "Tailwind CSS",
-      description: "Create beautiful and consistent UI"
-    }
+    { title: 'React',        description: 'Build dynamic and responsive user interfaces' },
+    { title: 'TypeScript',   description: 'Write safe, scalable and maintainable code' },
+    { title: 'Tailwind CSS', description: 'Create beautiful and consistent UI' },
   ],
 
   backend: [
-    {
-      title: "Spring Boot",
-      description: "Develop scalable REST APIs"
-    },
-    {
-      title: "Java",
-      description: "Build reliable backend systems"
-    },
-    {
-      title: "PostgreSQL",
-      description: "Design efficient databases"
-    }
+    { title: 'Spring Boot', description: 'Develop scalable REST APIs' },
+    { title: 'Java',        description: 'Build reliable backend systems' },
+    { title: 'PostgreSQL',  description: 'Design efficient databases' },
   ],
 
   benefits: [
-    "Impactful Projects",
-    "Collaborative Team",
-    "Learning Opportunities",
-    "Flexible Work Environment",
-    "Competitive Benefits"
+    'Impactful Projects',
+    'Collaborative Team',
+    'Learning Opportunities',
+    'Flexible Work Environment',
+    'Competitive Benefits',
   ],
-
-  apply: {
-    title: "Apply Now",
-    email: "careers@technocratblues.com",
-    tagline: "Let's build the future together!"
-  }
 };

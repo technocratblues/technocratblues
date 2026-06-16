@@ -39,7 +39,7 @@ export default function ClientSection() {
                     <h2 className="section-title font-display">
                         Great work starts with
                         <br />
-                        <em className="font-serif italic text-brand">strong partnerships.</em>
+                        <em className="font-serif italic text-brand">strong partnerships</em>
                     </h2>
                 </div>
 

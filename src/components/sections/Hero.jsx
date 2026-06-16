@@ -5,7 +5,7 @@ import { HERO_HEADLINE, LOGO } from '../../assets';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const CYCLING_WORDS = ['forward.', 'faster.', 'smarter.', 'at scale.', 'with clarity.', 'that lasts.'];
+const CYCLING_WORDS = ['Forward', 'Faster', 'Smarter', 'At Scale', 'With Clarity', 'That Lasts'];
 
 const STAT_CONFIG = [
   {
@@ -103,7 +103,7 @@ function StatsStrip() {
             <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl flex items-center justify-center mb-2" style={{ background: `${color}15`, color }}>
               {renderIcon()}
             </div>
-            <p className="font-display text-[10px] sm:text-sm font-black leading-snug break-words" style={{ color: '#111' }}>{value}</p>
+            <p className="font-display text-[10px] sm:text-sm font-black leading-snug wrap-break-words" style={{ color: '#111' }}>{value}</p>
             <p className="text-[9px] sm:text-[11px] mt-0.5 leading-tight" style={{ color: '#888' }}>{label}</p>
             <div className="mt-2 sm:mt-3 h-0.5 rounded-full overflow-hidden" style={{ background: `${color}18` }}>
               <div ref={el => { barsRef.current[i] = el; }} className="h-full rounded-full" style={{ width: '100%', background: `linear-gradient(90deg, ${color}88, ${color})`, transformOrigin: 'left center', transform: 'scaleX(0)' }} />
@@ -165,7 +165,7 @@ export default function Hero() {
       <div className="absolute inset-0 pointer-events-none select-none">
         <div className="absolute top-0 right-0 w-1/2 h-2/3 bg-linear-to-bl from-blue-50/40 to-transparent sm:from-blue-50/80" />
         <div className="absolute bottom-0 left-0 w-2/5 h-1/2 opacity-50" style={{ backgroundImage: 'radial-gradient(circle, rgba(112,120,208,0.08) 1px, transparent 1px)', backgroundSize: '26px 26px' }} />
-        <div className="absolute top-1/4 right-1/3 w-48 h-48 sm:w-96 sm:h-96 bg-blue-100/15 sm:bg-blue-100/25 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 right-1/3 w-96 h-96 bg-blue-100/25 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-indigo-100/20 rounded-full blur-3xl" />
       </div>
 
