@@ -155,7 +155,6 @@ export default function ContactSection() {
                                     </svg>
                                 </div>
                                 <div>
-                                    <p className="text-xs text-(--color-ink-pale) uppercase tracking-wider mb-0.5">Visit us</p>
                                     <p className="text-sm font-semibold text-(--color-ink)">{BRAND.address.line1}</p>
                                     <p className="text-xs text-(--color-ink-ghost) mt-0.5">{BRAND.address.line2}</p>
                                 </div>
