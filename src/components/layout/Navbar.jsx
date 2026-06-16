@@ -37,8 +37,13 @@ function scrollTo(href) {
 }
 
 export default function Navbar() {
-    const navRef = useRef(null);
-    const pillRef = useRef(null);
+    const navRef      = useRef(null);
+    const pillRef     = useRef(null);
+    const dropdownRef = useRef(null);
+    const linesRef    = useRef([]);
+    const itemsRef    = useRef([]);
+
+    const [menuOpen,      setMenuOpen]      = useState(false);
     const [activeSection, setActiveSection] = useState('home');
 
     /* ── Entry animation ── */
@@ -87,9 +92,9 @@ export default function Navbar() {
 
     /* ── Active section tracking ── */
     useEffect(() => {
-        const NAV_HEIGHT = 80;       // navbar height in px
-        const BUFFER = 40;       // extra px — prevents early activation of short/nested sections
-        const TRIGGER = NAV_HEIGHT + BUFFER;
+        const NAV_HEIGHT = 80;
+        const BUFFER     = 40;
+        const TRIGGER    = NAV_HEIGHT + BUFFER;
 
         const getActiveId = () => {
             const sections = LINKS
@@ -98,7 +103,6 @@ export default function Navbar() {
 
             const scrollY = window.scrollY + TRIGGER;
 
-            // Walk bottom→top; first section whose top is above the trigger wins
             for (let i = sections.length - 1; i >= 0; i--) {
                 const top = sections[i].getBoundingClientRect().top + window.scrollY;
                 if (scrollY >= top) return sections[i].id;
@@ -116,10 +120,52 @@ export default function Navbar() {
             });
         };
 
-        setActiveSection(getActiveId()); // set immediately on mount
+        setActiveSection(getActiveId());
         window.addEventListener('scroll', onScroll, { passive: true });
         return () => window.removeEventListener('scroll', onScroll);
     }, []);
+
+    /* ── Hamburger → × morph ── */
+    useEffect(() => {
+        const [l1, l2, l3] = linesRef.current;
+        const tl = gsap.timeline({ defaults: { duration: 0.25, ease: 'power2.inOut' } });
+
+        if (menuOpen) {
+            tl.to(l2, { opacity: 0, scaleX: 0.5, duration: 0.15 })
+              .to(l1, { y: 4,  rotate:  45, transformOrigin: '50% 50%' }, '<')
+              .to(l3, { y: -4, rotate: -45, transformOrigin: '50% 50%' }, '<');
+        } else {
+            tl.to(l2, { opacity: 1, scaleX: 1 })
+              .to(l1, { y: 0, rotate: 0 }, '<')
+              .to(l3, { y: 0, rotate: 0 }, '<');
+        }
+    }, [menuOpen]);
+
+    /* ── Dropdown clip-path reveal + staggered item fade ── */
+    useEffect(() => {
+        const el = dropdownRef.current;
+        if (!el) return;
+
+        if (menuOpen) {
+            gsap.set(el, { display: 'block' });
+            gsap.fromTo(el,
+                { opacity: 0, y: -8, clipPath: 'inset(0 0 100% 0)' },
+                { opacity: 1, y: 0,  clipPath: 'inset(0 0 0% 0)', duration: 0.35, ease: 'power3.out' }
+            );
+            gsap.fromTo(itemsRef.current,
+                { opacity: 0, x: -10 },
+                { opacity: 1, x: 0,  duration: 0.25, ease: 'power2.out', stagger: 0.06, delay: 0.1 }
+            );
+        } else {
+            gsap.to(el, {
+                opacity: 0, y: -6, clipPath: 'inset(0 0 100% 0)',
+                duration: 0.25, ease: 'power2.in',
+                onComplete: () => gsap.set(el, { display: 'none' }),
+            });
+        }
+    }, [menuOpen]);
+
+    const handleMobileNav = (href) => { setMenuOpen(false); scrollTo(href); };
 
     return (
         <header
@@ -130,7 +176,7 @@ export default function Navbar() {
             {/* Pill */}
             <div
                 ref={pillRef}
-                className="pointer-events-auto w-[calc(100%-2rem)] max-w-5xl "
+                className="pointer-events-auto w-[calc(100%-2rem)] max-w-5xl"
                 style={{
                     padding: '1.5px',
                     background: 'linear-gradient(135deg, rgba(26,71,232,0.5) 0%, rgba(160,180,255,0.22) 45%, rgba(255,255,255,0.12) 60%, rgba(26,71,232,0.38) 100%)',
@@ -141,8 +187,38 @@ export default function Navbar() {
                 <div className="rounded-[calc(1rem-1.5px)] glass px-3 sm:px-5">
                     <div className="flex items-center justify-between h-14 sm:h-16 gap-1 sm:gap-4 overflow-x-auto scrollbar-none">
 
-                        {/* Nav links — always visible */}
-                        <nav className="flex items-center gap-0.5 shrink-0">
+                        {/* Mobile: CTA left · hamburger right */}
+                        <div className="flex items-center justify-between w-full sm:hidden">
+                            <button
+                                onClick={() => scrollTo('#contact')}
+                                className="btn btn-primary text-xs px-3 py-1.5"
+                            >
+                                Let's talk
+                                <svg width="11" height="11" viewBox="0 0 14 14" fill="none">
+                                    <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                            </button>
+
+                            <button
+                                onClick={() => setMenuOpen(p => !p)}
+                                className="p-2 rounded-lg transition-colors"
+                                style={{ color: 'var(--color-ink)' }}
+                                aria-label="Toggle menu"
+                                aria-expanded={menuOpen}
+                            >
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    {[6, 10, 14].map((y, i) => (
+                                        <line key={y} ref={el => (linesRef.current[i] = el)}
+                                            x1="3" y1={y} x2="17" y2={y}
+                                            stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"
+                                        />
+                                    ))}
+                                </svg>
+                            </button>
+                        </div>
+
+                        {/* Nav links — desktop only */}
+                        <nav className="hidden sm:flex items-center gap-0.5 shrink-0">
                             {LINKS.map(({ label, href }) => {
                                 const id = href.replace('#', '');
                                 return (
@@ -158,10 +234,10 @@ export default function Navbar() {
                             })}
                         </nav>
 
-                        {/* Let's talk CTA — always visible */}
+                        {/* CTA — desktop only */}
                         <button
                             onClick={() => scrollTo('#contact')}
-                            className="btn btn-primary shrink-0 text-xs sm:text-sm px-3 sm:px-5 py-2 sm:py-2.5"
+                            className="hidden sm:flex btn btn-primary shrink-0 text-xs sm:text-sm px-3 sm:px-5 py-2 sm:py-2.5"
                         >
                             Let's talk
                             <svg width="12" height="12" viewBox="0 0 14 14" fill="none" className="sm:w-3.5 sm:h-3.5">
@@ -172,6 +248,63 @@ export default function Navbar() {
                     </div>
                 </div>
             </div>
+
+            {/* Mobile dropdown — outside pill, floats below with mt-2 gap */}
+            <div
+                ref={dropdownRef}
+                style={{ display: 'none' }}
+                className="pointer-events-auto sm:hidden w-[calc(100%-2rem)] max-w-5xl mt-2"
+            >
+                <div style={{
+                    padding: '1.5px',
+                    background: 'linear-gradient(135deg, rgba(26,71,232,0.5) 0%, rgba(160,180,255,0.22) 45%, rgba(255,255,255,0.12) 60%, rgba(26,71,232,0.38) 100%)',
+                    borderRadius: '1rem',
+                    boxShadow: 'var(--shadow-nav)',
+                }}>
+                    <div className="rounded-[calc(1rem-1.5px)] glass overflow-hidden">
+                        <div
+                            className="h-px mx-4"
+                            style={{ background: 'linear-gradient(90deg, rgba(26,71,232,0.35) 0%, rgba(160,180,255,0.15) 60%, transparent 100%)' }}
+                        />
+                        <nav className="flex flex-col px-2 py-2">
+                            {LINKS.map(({ label, href }, i) => {
+                                const id       = href.replace('#', '');
+                                const isActive = activeSection === id;
+                                return (
+                                    <button
+                                        key={label}
+                                        ref={el => (itemsRef.current[i] = el)}
+                                        onClick={() => handleMobileNav(href)}
+                                        className="group relative flex items-center gap-3 text-left px-3 py-3 rounded-xl cursor-pointer transition-colors duration-200"
+                                        style={{ background: isActive ? 'rgba(26,71,232,0.07)' : 'transparent' }}
+                                        onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = 'rgba(26,71,232,0.04)'; }}
+                                        onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = 'transparent'; }}
+                                    >
+                                        <span
+                                            className="shrink-0 w-0.5 h-5 rounded-full transition-all duration-200"
+                                            style={{ background: 'var(--color-brand)', opacity: isActive ? 1 : 0 }}
+                                        />
+                                        <span
+                                            className="text-[0.92rem] font-medium tracking-[-0.01em] transition-colors duration-200"
+                                            style={{ color: isActive ? 'var(--color-brand)' : 'var(--color-ink)' }}
+                                        >
+                                            {label}
+                                        </span>
+                                        {isActive && (
+                                            <span
+                                                className="ml-auto shrink-0 w-1.5 h-1.5 rounded-full"
+                                                style={{ background: 'var(--color-brand)' }}
+                                            />
+                                        )}
+                                    </button>
+                                );
+                            })}
+                        </nav>
+                        <div className="h-1" />
+                    </div>
+                </div>
+            </div>
+
         </header>
     );
 }

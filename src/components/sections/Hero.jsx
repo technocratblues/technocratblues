@@ -163,9 +163,9 @@ export default function Hero() {
   return (
     <section id="home" className="relative min-h-screen flex flex-col bg-surface overflow-hidden pt-20">
       <div className="absolute inset-0 pointer-events-none select-none">
-        <div className="absolute top-0 right-0 w-1/2 h-2/3 bg-linear-to-bl from-blue-50/80 to-transparent" />
+        <div className="absolute top-0 right-0 w-1/2 h-2/3 bg-linear-to-bl from-blue-50/40 to-transparent sm:from-blue-50/80" />
         <div className="absolute bottom-0 left-0 w-2/5 h-1/2 opacity-50" style={{ backgroundImage: 'radial-gradient(circle, rgba(112,120,208,0.08) 1px, transparent 1px)', backgroundSize: '26px 26px' }} />
-        <div className="absolute top-1/4 right-1/3 w-96 h-96 bg-blue-100/25 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 right-1/3 w-48 h-48 sm:w-96 sm:h-96 bg-blue-100/15 sm:bg-blue-100/25 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-indigo-100/20 rounded-full blur-3xl" />
       </div>
 
