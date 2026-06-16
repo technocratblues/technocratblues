@@ -94,6 +94,7 @@ export default function ContactSection() {
     const handleChange = useCallback((field, value) => {
         setForm(f => ({ ...f, [field]: value }));
         if (field === 'query') setCharCount(value.length);
+        if (field === 'email') setTouched(t => ({ ...t, email: true }));
         if (status === 'error') setStatus('idle');
     }, [status]);
 
@@ -283,7 +284,10 @@ export default function ContactSection() {
                                 <button
                                     type="submit"
                                     disabled={submitDisabled}
-                                    className="btn btn-primary btn-full mt-1 disabled:opacity-60 disabled:cursor-not-allowed"
+                                    className={`btn btn-full mt-1 transition-all duration-200 ${!isFormValid || submitDisabled
+                                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                        : 'btn-primary cursor-pointer'
+                                        }`}
                                 >
                                     {status === 'submitting' ? (
                                         <span className="flex items-center justify-center gap-2">
