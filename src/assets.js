@@ -175,6 +175,13 @@ export const CAREERS = {
   experience: "3–6 Years",
   description: "We are looking for a passionate Full Stack Developer...",
 
+  apply: {
+    title: "Apply Now",
+    email: "careers@technocratblues.com",
+    url: `mailto:careers@technocratblues.com`,
+    tagline: "Let's build the future together!"
+  },
+
   frontend: [
     {
       title: "React",

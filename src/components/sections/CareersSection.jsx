@@ -230,7 +230,7 @@ export default function CareersSection() {
                             </div>
 
                             <a
-                                href={`mailto:${CAREERS.apply.email}`}
+                                href={CAREERS.apply.url}
                                 className="btn btn-primary"
                             >
                                 Apply Now
