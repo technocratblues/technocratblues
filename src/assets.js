@@ -20,11 +20,11 @@ export const LOGO = {
 };
 
 export const NAV_LINKS = [
-  { label: 'Home', href: '#home' },
-  { label: 'About', href: '#about' },
+  { label: 'Home',     href: '#home' },
+  { label: 'About',    href: '#about' },
   { label: 'Services', href: '#services' },
-  { label: 'Clients', href: '#clients' },
-  { label: 'Careers', href: '#careers' },
+  { label: 'Clients',  href: '#clients' },
+  { label: 'Careers',  href: '/careers', isRoute: true },
 ];
 
 // Hero
@@ -117,8 +117,6 @@ export const SOCIAL_LINKS = {
   github:   'https://github.com/technocratblues',
   linkedin: 'https://www.linkedin.com/company/technocrat-blues/posts/',
   twitter:  'https://twitter.com/technocratblues',
-  // imp note :--> Dont uncomment email
-  // email: 'mailto:hello@technocratblues.com',
 };
 
 // Capability Card Details
@@ -169,37 +167,38 @@ export const CAPABILITY_DETAILS = {
   },
 };
 
-// Careers
-export const CAREERS = {
+// ── Careers Page ─────────────────────────────────────────────────────────────
+// Single source of truth — mirrors the hiring poster exactly.
+export const CAREERS_PAGE = {
   badge: 'We Are Hiring',
   role: 'Full Stack Developer',
   experience: '3–6 Years',
-  description: 'We are looking for a passionate Full Stack Developer',
-
-  apply: {
-    title: 'Apply Now',
-    email: 'careers@technocratblues.com',
-    url: `mailto:careers@technocratblues.com`,
-    tagline: "Let's build the future together",
-  },
+  description:
+    'We are looking for a passionate Full Stack Developer who loves building scalable, high-performance web applications and great user experiences.',
 
   frontend: [
-    { title: 'React',        description: 'Build dynamic and responsive user interfaces' },
-    { title: 'TypeScript',   description: 'Write safe, scalable and maintainable code' },
-    { title: 'Tailwind CSS', description: 'Create beautiful and consistent UI' },
+    { title: 'React',        desc: 'Build dynamic and responsive user interfaces' },
+    { title: 'TypeScript',   desc: 'Write safe, scalable and maintainable code' },
+    { title: 'Tailwind CSS', desc: 'Create beautiful, modern and consistent UI with ease' },
   ],
 
   backend: [
-    { title: 'Spring Boot', description: 'Develop scalable REST APIs' },
-    { title: 'Java',        description: 'Build reliable backend systems' },
-    { title: 'PostgreSQL',  description: 'Design efficient databases' },
+    { title: 'Spring Boot', desc: 'Develop robust and scalable RESTful APIs' },
+    { title: 'Java',        desc: 'Build secure, reliable and high-performance applications' },
+    { title: 'PostgreSQL',  desc: 'Design and optimize reliable and efficient databases' },
   ],
 
-  benefits: [
-    'Impactful Projects',
-    'Collaborative Team',
-    'Learning Opportunities',
-    'Flexible Work Environment',
-    'Competitive Benefits',
+  whyJoinUs: [
+    'Work on impactful and challenging projects',
+    'Collaborate with a talented and supportive team',
+    'Continuous learning and growth opportunities',
+    'Flexible work environment',
+    'Competitive salary and benefits',
   ],
+
+  apply: {
+    email: 'careers@technocratblues.com',
+    tagline: "Let's build the future together!",
+    mailto: 'mailto:careers@technocratblues.com',
+  },
 };

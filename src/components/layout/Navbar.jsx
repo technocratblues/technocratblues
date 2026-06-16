@@ -1,39 +1,42 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { NAV_LINKS } from '../../assets';
 gsap.registerPlugin(ScrollTrigger);
 
-
+// Separate links into hash-based and route-based
 const LINKS = NAV_LINKS.map(link => ({
     label: link.label,
-    href:
-        link.label.toLowerCase() === 'home'
-            ? '#home'
-            : `#${link.label.toLowerCase()}`
+    href: link.href,
+    isRoute: !!link.isRoute,
 }));
 
-function scrollTo(href) {
+// Hash-scroll helper (only used when on the home page)
+function scrollToHash(href) {
     const id = href.replace('#', '');
     const el = document.getElementById(id);
     if (!el) return;
 
     ScrollTrigger.refresh();
 
-    const pinSpacer = el.closest('[data-scrolltrigger-pin-spacer]') ?? el.parentElement?.closest('[data-scrolltrigger-pin-spacer]');
+    const pinSpacer =
+        el.closest('[data-scrolltrigger-pin-spacer]') ??
+        el.parentElement?.closest('[data-scrolltrigger-pin-spacer]');
     const target = pinSpacer ?? el;
     const top = target.getBoundingClientRect().top + window.scrollY;
 
     const serviceEl = document.getElementById('services');
     const servicePinSpacer = serviceEl
-        ? (serviceEl.closest('[data-scrolltrigger-pin-spacer]') ?? serviceEl.parentElement?.closest('[data-scrolltrigger-pin-spacer]'))
+        ? (serviceEl.closest('[data-scrolltrigger-pin-spacer]') ??
+          serviceEl.parentElement?.closest('[data-scrolltrigger-pin-spacer]'))
         : null;
     const servicePinTop = servicePinSpacer
         ? servicePinSpacer.getBoundingClientRect().top + window.scrollY
         : null;
 
-    const crossesPinnedSection = servicePinTop !== null && top >= servicePinTop;
-    window.scrollTo({ top, behavior: crossesPinnedSection ? 'instant' : 'smooth' });
+    const crossesPinned = servicePinTop !== null && top >= servicePinTop;
+    window.scrollTo({ top, behavior: crossesPinned ? 'instant' : 'smooth' });
 }
 
 export default function Navbar() {
@@ -46,7 +49,12 @@ export default function Navbar() {
     const [menuOpen,      setMenuOpen]      = useState(false);
     const [activeSection, setActiveSection] = useState('home');
 
-    /* ── Entry animation ── */
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const isHome = location.pathname === '/';
+
+    // ── Entry animation ────────────────────────────────────────────────────
     useEffect(() => {
         gsap.fromTo(navRef.current,
             { y: -100, opacity: 0 },
@@ -54,7 +62,7 @@ export default function Navbar() {
         );
     }, []);
 
-    /* ── Hide / reveal + shadow on scroll ── */
+    // ── Hide / reveal + shadow on scroll ──────────────────────────────────
     useEffect(() => {
         let lastY = window.scrollY;
         let hidden = false;
@@ -90,14 +98,23 @@ export default function Navbar() {
         return () => window.removeEventListener('scroll', onScroll);
     }, []);
 
-    /* ── Active section tracking ── */
+    // ── Active section tracking (home only) ───────────────────────────────
     useEffect(() => {
+        if (!isHome) {
+            // On /careers or other routes, highlight that nav item
+            const matched = LINKS.find(l => l.isRoute && location.pathname === l.href);
+            if (matched) setActiveSection(matched.href);
+            return;
+        }
+
         const NAV_HEIGHT = 80;
         const BUFFER     = 40;
         const TRIGGER    = NAV_HEIGHT + BUFFER;
 
+        const hashLinks = LINKS.filter(l => !l.isRoute);
+
         const getActiveId = () => {
-            const sections = LINKS
+            const sections = hashLinks
                 .map(l => document.getElementById(l.href.replace('#', '')))
                 .filter(Boolean);
 
@@ -123,9 +140,9 @@ export default function Navbar() {
         setActiveSection(getActiveId());
         window.addEventListener('scroll', onScroll, { passive: true });
         return () => window.removeEventListener('scroll', onScroll);
-    }, []);
+    }, [isHome, location.pathname]);
 
-    /* ── Hamburger → × morph ── */
+    // ── Hamburger → × morph ───────────────────────────────────────────────
     useEffect(() => {
         const [l1, l2, l3] = linesRef.current;
         const tl = gsap.timeline({ defaults: { duration: 0.25, ease: 'power2.inOut' } });
@@ -141,7 +158,7 @@ export default function Navbar() {
         }
     }, [menuOpen]);
 
-    /* ── Dropdown clip-path reveal + staggered item fade ── */
+    // ── Dropdown clip-path reveal ─────────────────────────────────────────
     useEffect(() => {
         const el = dropdownRef.current;
         if (!el) return;
@@ -165,7 +182,38 @@ export default function Navbar() {
         }
     }, [menuOpen]);
 
-    const handleMobileNav = (href) => { setMenuOpen(false); scrollTo(href); };
+    // ── Unified click handler ──────────────────────────────────────────────
+    const handleNav = (link, closeMobile = false) => {
+        if (closeMobile) setMenuOpen(false);
+
+        if (link.isRoute) {
+            navigate(link.href);
+        } else {
+            // If not on home, navigate there first then scroll
+            if (!isHome) {
+                navigate('/');
+                // Small delay to let the DOM render before scrolling
+                setTimeout(() => scrollToHash(link.href), 120);
+            } else {
+                scrollToHash(link.href);
+            }
+        }
+    };
+
+    const isActive = (link) => {
+        if (link.isRoute) return location.pathname === link.href;
+        if (!isHome) return false;
+        return activeSection === link.href.replace('#', '');
+    };
+
+    const handleContactClick = () => {
+        if (!isHome) {
+            navigate('/');
+            setTimeout(() => scrollToHash('#contact'), 120);
+        } else {
+            scrollToHash('#contact');
+        }
+    };
 
     return (
         <header
@@ -190,7 +238,7 @@ export default function Navbar() {
                         {/* Mobile: CTA left · hamburger right */}
                         <div className="flex items-center justify-between w-full sm:hidden">
                             <button
-                                onClick={() => scrollTo('#contact')}
+                                onClick={handleContactClick}
                                 className="btn btn-primary text-xs px-3 py-1.5"
                             >
                                 Let's talk
@@ -217,26 +265,23 @@ export default function Navbar() {
                             </button>
                         </div>
 
-                        {/* Nav links — desktop only */}
+                        {/* Nav links — desktop */}
                         <nav className="hidden sm:flex items-center gap-0.5 shrink-0">
-                            {LINKS.map(({ label, href }) => {
-                                const id = href.replace('#', '');
-                                return (
-                                    <button
-                                        key={label}
-                                        onClick={() => scrollTo(href)}
-                                        className={`nav-link whitespace-nowrap text-xs sm:text-[0.905rem] px-2.5 sm:px-4 py-2 cursor-pointer
-                                            ${activeSection === id ? 'text-brand nav-active' : 'text-[#1a1a2e]'}`}
-                                    >
-                                        {label}
-                                    </button>
-                                );
-                            })}
+                            {LINKS.map((link) => (
+                                <button
+                                    key={link.label}
+                                    onClick={() => handleNav(link)}
+                                    className={`nav-link whitespace-nowrap text-xs sm:text-[0.905rem] px-2.5 sm:px-4 py-2 cursor-pointer
+                                        ${isActive(link) ? 'text-brand nav-active' : 'text-[#1a1a2e]'}`}
+                                >
+                                    {link.label}
+                                </button>
+                            ))}
                         </nav>
 
-                        {/* CTA — desktop only */}
+                        {/* CTA — desktop */}
                         <button
-                            onClick={() => scrollTo('#contact')}
+                            onClick={handleContactClick}
                             className="hidden sm:flex btn btn-primary shrink-0 text-xs sm:text-sm px-3 sm:px-5 py-2 sm:py-2.5"
                         >
                             Let's talk
@@ -249,7 +294,7 @@ export default function Navbar() {
                 </div>
             </div>
 
-            {/* Mobile dropdown — outside pill, floats below with mt-2 gap */}
+            {/* Mobile dropdown */}
             <div
                 ref={dropdownRef}
                 style={{ display: 'none' }}
@@ -267,30 +312,29 @@ export default function Navbar() {
                             style={{ background: 'linear-gradient(90deg, rgba(26,71,232,0.35) 0%, rgba(160,180,255,0.15) 60%, transparent 100%)' }}
                         />
                         <nav className="flex flex-col px-2 py-2">
-                            {LINKS.map(({ label, href }, i) => {
-                                const id       = href.replace('#', '');
-                                const isActive = activeSection === id;
+                            {LINKS.map((link, i) => {
+                                const active = isActive(link);
                                 return (
                                     <button
-                                        key={label}
+                                        key={link.label}
                                         ref={el => (itemsRef.current[i] = el)}
-                                        onClick={() => handleMobileNav(href)}
+                                        onClick={() => handleNav(link, true)}
                                         className="group relative flex items-center gap-3 text-left px-3 py-3 rounded-xl cursor-pointer transition-colors duration-200"
-                                        style={{ background: isActive ? 'rgba(26,71,232,0.07)' : 'transparent' }}
-                                        onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = 'rgba(26,71,232,0.04)'; }}
-                                        onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = 'transparent'; }}
+                                        style={{ background: active ? 'rgba(26,71,232,0.07)' : 'transparent' }}
+                                        onMouseEnter={e => { if (!active) e.currentTarget.style.background = 'rgba(26,71,232,0.04)'; }}
+                                        onMouseLeave={e => { if (!active) e.currentTarget.style.background = 'transparent'; }}
                                     >
                                         <span
                                             className="shrink-0 w-0.5 h-5 rounded-full transition-all duration-200"
-                                            style={{ background: 'var(--color-brand)', opacity: isActive ? 1 : 0 }}
+                                            style={{ background: 'var(--color-brand)', opacity: active ? 1 : 0 }}
                                         />
                                         <span
                                             className="text-[0.92rem] font-medium tracking-[-0.01em] transition-colors duration-200"
-                                            style={{ color: isActive ? 'var(--color-brand)' : 'var(--color-ink)' }}
+                                            style={{ color: active ? 'var(--color-brand)' : 'var(--color-ink)' }}
                                         >
-                                            {label}
+                                            {link.label}
                                         </span>
-                                        {isActive && (
+                                        {active && (
                                             <span
                                                 className="ml-auto shrink-0 w-1.5 h-1.5 rounded-full"
                                                 style={{ background: 'var(--color-brand)' }}

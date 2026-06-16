@@ -3,7 +3,9 @@ import AboutSection from '../components/sections/AboutSection';
 import ServicesSection from '../components/sections/ServicesSection';
 import ClientSection from '../components/sections/ClientSection';
 import ContactSection from '../components/sections/ContactSection';
-import CareersSection from "../components/sections/CareersSection";
+
+// CareersSection has been promoted to its own page at /careers.
+// The Careers nav link routes there directly.
 
 export default function Home() {
   return (
@@ -12,7 +14,6 @@ export default function Home() {
       <AboutSection />
       <ServicesSection />
       <ClientSection />
-      <CareersSection />
       <ContactSection />
     </>
   );
