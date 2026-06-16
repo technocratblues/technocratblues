@@ -34,7 +34,7 @@ export default function AboutSection() {
     return (
         <section id="about" ref={sectionRef} className="section bg-surface">
             <div className="container-custom">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 xl:gap-24 items-start">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 items-center">
 
                     {/* ── LEFT ── */}
                     <div ref={leftRef}>
@@ -56,7 +56,7 @@ export default function AboutSection() {
                             fast, focused, and made to grow.
                         </p>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-0">
                             <p className="text-sm text-[color:var(--color-ink-soft)] leading-relaxed">
                                 We are a tech startup dedicated to building software that solves real-world problems
                                 From architecture to deployment, we handle every layer of the stack.
@@ -98,13 +98,18 @@ export default function AboutSection() {
                                 <p className="font-display font-black text-white text-base">What we stand for</p>
                             </div>
 
-                            <div className="flex flex-col gap-4">
-                                {ABOUT_VALUES.map(({ label, desc }) => (
-                                    <div key={label} className="flex gap-3">
-                                        <span className="mt-1 w-1.5 h-1.5 rounded-full bg-brand shrink-0" />
-                                        <div>
-                                            <p className="text-white font-semibold text-sm">{label}</p>
-                                            <p className="text-white/50 text-xs mt-0.5">{desc}</p>
+                            <div className="flex flex-col">
+                                {ABOUT_VALUES.map(({ label, desc }, i) => (
+                                    <div key={label}>
+                                        {i !== 0 && (
+                                            <hr style={{ borderColor: 'rgba(112,120,208,0.18)' }} className="my-4" />
+                                        )}
+                                        <div className="flex items-start gap-3">
+                                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-brand shrink-0" />
+                                            <div>
+                                                <p className="text-white font-semibold text-sm">{label}</p>
+                                                <p className="text-white/50 text-xs mt-0.5">{desc}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 ))}

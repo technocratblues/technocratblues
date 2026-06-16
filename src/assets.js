@@ -168,37 +168,113 @@ export const CAPABILITY_DETAILS = {
 };
 
 // ── Careers Page ─────────────────────────────────────────────────────────────
-// Single source of truth — mirrors the hiring poster exactly.
-export const CAREERS_PAGE = {
-  badge: 'We Are Hiring',
-  role: 'Full Stack Developer',
-  experience: '3–6 Years',
-  description:
-    'We are looking for a passionate Full Stack Developer who loves building scalable, high-performance web applications and great user experiences.',
+// CAREERS_LISTINGS — add/remove job objects here to control what appears on /careers.
+// Each entry needs a unique `slug` that becomes the URL anchor: /careers#<slug>
+//
+// skill groups: each group has a `label` (section heading) and `items[]` (skill rows).
+// This is intentionally generic — groups can be Frontend/Backend, iOS/Android, etc.
+export const CAREERS_LISTINGS = [
+  {
+    // ── Full Stack Developer ──────────────────────────────────────────────
+    slug:        'full-stack-developer',
+    badge:       'We Are Hiring',
+    role:        'Full Stack Developer',
+    type:        'Full-time',
+    location:    'Remote / Baner, Pune',
+    experience:  '3–6 Years',
+    description:
+      'We are looking for a passionate Full Stack Developer who loves building scalable, high-performance web applications and great user experiences.',
 
-  frontend: [
-    { title: 'React',        desc: 'Build dynamic and responsive user interfaces' },
-    { title: 'TypeScript',   desc: 'Write safe, scalable and maintainable code' },
-    { title: 'Tailwind CSS', desc: 'Create beautiful, modern and consistent UI with ease' },
-  ],
+    skillGroups: [
+      {
+        label: 'Frontend',
+        icon: 'monitor',
+        items: [
+          { title: 'React',        desc: 'Build dynamic and responsive user interfaces' },
+          { title: 'TypeScript',   desc: 'Write safe, scalable and maintainable code' },
+          { title: 'Tailwind CSS', desc: 'Create beautiful, modern and consistent UI with ease' },
+        ],
+      },
+      {
+        label: 'Backend',
+        icon: 'server',
+        items: [
+          { title: 'Spring Boot', desc: 'Develop robust and scalable RESTful APIs' },
+          { title: 'Java',        desc: 'Build secure, reliable and high-performance applications' },
+          { title: 'PostgreSQL',  desc: 'Design and optimize reliable and efficient databases' },
+        ],
+      },
+    ],
 
-  backend: [
-    { title: 'Spring Boot', desc: 'Develop robust and scalable RESTful APIs' },
-    { title: 'Java',        desc: 'Build secure, reliable and high-performance applications' },
-    { title: 'PostgreSQL',  desc: 'Design and optimize reliable and efficient databases' },
-  ],
+    whyJoinUs: [
+      'Work on impactful and challenging projects',
+      'Collaborate with a talented and supportive team',
+      'Continuous learning and growth opportunities',
+      'Flexible work environment',
+      'Competitive salary and benefits',
+    ],
 
-  whyJoinUs: [
-    'Work on impactful and challenging projects',
-    'Collaborate with a talented and supportive team',
-    'Continuous learning and growth opportunities',
-    'Flexible work environment',
-    'Competitive salary and benefits',
-  ],
-
-  apply: {
-    email: 'careers@technocratblues.com',
-    tagline: "Let's build the future together!",
-    mailto: 'mailto:careers@technocratblues.com',
+    apply: {
+      email:   'careers@technocratblues.com',
+      tagline: "Let's build the future together!",
+      mailto:  'mailto:careers@technocratblues.com',
+    },
   },
+
+  {
+    // ── Mobile Developer ──────────────────────────────────────────────────
+    slug:        'mobile-developer',
+    badge:       'We Are Hiring',
+    role:        'Mobile Developer',
+    type:        'Full-time',
+    location:    'Remote / Baner, Pune',
+    experience:  '2–5 Years',
+    description:
+      'We are looking for a talented Mobile Developer to craft beautiful, performant cross-platform apps that delight users on every screen.',
+
+    skillGroups: [
+      {
+        label: 'Cross-Platform',
+        icon: 'mobile',
+        items: [
+          { title: 'React Native', desc: 'Build cross-platform apps with a single codebase' },
+          { title: 'TypeScript',   desc: 'Type-safe, maintainable mobile codebases' },
+          { title: 'Expo',         desc: 'Rapid development and OTA updates made simple' },
+        ],
+      },
+      {
+        label: 'Native & Backend',
+        icon: 'server',
+        items: [
+          { title: 'Android / Kotlin', desc: 'Write idiomatic Android code with modern Kotlin' },
+          { title: 'REST / GraphQL',   desc: 'Consume and design robust API contracts' },
+          { title: 'Firebase',         desc: 'Real-time data, auth, and cloud functions' },
+        ],
+      },
+    ],
+
+    whyJoinUs: [
+      'Ship apps used by thousands of real users',
+      'Work closely with designers and product leads',
+      'Freedom to influence technical direction',
+      'Flexible hours and remote-friendly culture',
+      'Competitive compensation package',
+    ],
+
+    apply: {
+      email:   'careers@technocratblues.com',
+      tagline: "Let's build the future together!",
+      mailto:  'mailto:careers@technocratblues.com',
+    },
+  },
+];
+
+// ── Careers page metadata (hero section above the listings) ──────────────────
+export const CAREERS_META = {
+  badge:       'Join Our Team',
+  headline:    'Open Positions',
+  subheadline: 'We are always looking for talented people to help us build the future.',
 };
+
+// Legacy alias — keeps any old import working without a breaking change
+export const CAREERS_PAGE = CAREERS_LISTINGS[0];

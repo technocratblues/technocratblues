@@ -1,191 +1,37 @@
 import { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { CAREERS } from "../../assets";
+import { CAREERS_LISTINGS, CAREERS_META } from "../../assets";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function CareersSection() {
     const sectionRef = useRef(null);
-    const cardsRef = useRef(null);
+    const headerRef  = useRef(null);
+    const listRef    = useRef(null);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            const section = sectionRef.current;
-            const cards = cardsRef.current?.children;
-
-            //1. Header: eyebrow → title → subtitle cascade
             gsap.fromTo(
-                section.querySelector(".section-eyebrow"),
+                headerRef.current.querySelectorAll(".h-anim"),
                 { y: 20, opacity: 0 },
                 {
-                    y: 0,
-                    opacity: 1,
-                    duration: 0.5,
-                    ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: section,
-                        start: "top 80%",
-                    },
+                    y: 0, opacity: 1, duration: 0.6, stagger: 0.13, ease: "power3.out",
+                    scrollTrigger: { trigger: headerRef.current, start: "top 82%" },
                 }
             );
 
-            gsap.fromTo(
-                section.querySelectorAll(".section-title, .section-subtitle"),
-                { y: 30, opacity: 0 },
-                {
-                    y: 0,
-                    opacity: 1,
-                    duration: 0.6,
-                    stagger: 0.15,
-                    ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: section,
-                        start: "top 78%",
-                    },
-                }
-            );
-
-            //  2. Card 1 (Open Position): slide up
-            if (cards?.[0]) {
+            const rows = listRef.current?.querySelectorAll(".job-row");
+            if (rows?.length) {
                 gsap.fromTo(
-                    cards[0],
-                    { y: 50, opacity: 0 },
+                    rows,
+                    { y: 28, opacity: 0 },
                     {
-                        y: 0,
-                        opacity: 1,
-                        duration: 0.7,
-                        ease: "power3.out",
-                        scrollTrigger: {
-                            trigger: cards[0],
-                            start: "top 85%",
-                        },
+                        y: 0, opacity: 1, duration: 0.55, stagger: 0.12, ease: "power3.out",
+                        scrollTrigger: { trigger: listRef.current, start: "top 84%" },
                     }
                 );
-            }
-
-            // 3. Card 2 (Skills grid): Frontend ← left, Backend → right 
-            if (cards?.[1]) {
-                const cols = cards[1].querySelectorAll(".card-hover");
-
-                if (cols[0]) {
-                    gsap.fromTo(
-                        cols[0],
-                        { x: -40, opacity: 0 },
-                        {
-                            x: 0,
-                            opacity: 1,
-                            duration: 0.65,
-                            ease: "power3.out",
-                            scrollTrigger: {
-                                trigger: cards[1],
-                                start: "top 85%",
-                            },
-                        }
-                    );
-                }
-
-                if (cols[1]) {
-                    gsap.fromTo(
-                        cols[1],
-                        { x: 40, opacity: 0 },
-                        {
-                            x: 0,
-                            opacity: 1,
-                            duration: 0.65,
-                            ease: "power3.out",
-                            scrollTrigger: {
-                                trigger: cards[1],
-                                start: "top 85%",
-                            },
-                        }
-                    );
-                }
-
-                //4. Skill items inside Frontend/Backend: micro-stagger 
-                const frontendItems = cards[1].querySelectorAll(
-                    ".frontend-skills > div"
-                );
-                const backendItems = cards[1].querySelectorAll(
-                    ".backend-skills > div"
-                );
-
-                if (frontendItems.length) {
-                    gsap.fromTo(
-                        frontendItems,
-                        { x: -15, opacity: 0 },
-                        {
-                            x: 0,
-                            opacity: 1,
-                            duration: 0.4,
-                            stagger: 0.08,
-                            ease: "power2.out",
-                            scrollTrigger: {
-                                trigger: cols[0],
-                                start: "top 85%",
-                            },
-                        }
-                    );
-                }
-
-                if (backendItems.length) {
-                    gsap.fromTo(
-                        backendItems,
-                        { x: -15, opacity: 0 },
-                        {
-                            x: 0,
-                            opacity: 1,
-                            duration: 0.4,
-                            stagger: 0.08,
-                            ease: "power2.out",
-                            scrollTrigger: {
-                                trigger: cols[1],
-                                start: "top 85%",
-                            },
-                        }
-                    );
-                }
-            }
-
-            // Card 3 (Why Join Us): scale + fade in
-            if (cards?.[2]) {
-                gsap.fromTo(
-                    cards[2],
-                    { scale: 0.97, opacity: 0 },
-                    {
-                        scale: 1,
-                        opacity: 1,
-                        duration: 0.7,
-                        ease: "power2.out",
-                        scrollTrigger: {
-                            trigger: cards[2],
-                            start: "top 88%",
-                        },
-                    }
-                );
-
-                //  staggered reveal
-                const benefitItems = cards[2].querySelectorAll(
-                    ".benefits-grid > div"
-                );
-
-                if (benefitItems.length) {
-                    gsap.fromTo(
-                        benefitItems,
-                        { y: 10, opacity: 0 },
-                        {
-                            y: 0,
-                            opacity: 1,
-                            duration: 0.35,
-                            stagger: 0.07,
-                            ease: "power1.out",
-                            scrollTrigger: {
-                                trigger: cards[2],
-                                start: "top 88%",
-                            },
-                        }
-                    );
-                }
             }
         }, sectionRef);
 
@@ -193,120 +39,69 @@ export default function CareersSection() {
     }, []);
 
     return (
-        <section id="careers" ref={sectionRef} className="section">
+        <section id="careers" ref={sectionRef} className="section bg-surface">
             <div className="container-custom">
 
-                {/* Section Header  */}
-                <div className="max-w-3xl mb-14">
-                    <div className="section-eyebrow">
+                <div ref={headerRef} className="max-w-3xl mb-12">
+                    <div className="h-anim section-eyebrow">
                         <span className="badge-dot" />
                         <span className="badge-label">Careers</span>
                     </div>
-
-                    <h2 className="section-title mb-4">Join Our Team</h2>
-
-                    <p className="section-subtitle">
-                        We're looking for passionate engineers who love
-                        building scalable products, solving real-world
-                        problems, and growing alongside a talented team.
+                    <h2 className="h-anim section-title mb-4">Join Our Team</h2>
+                    <p className="h-anim section-subtitle">
+                        We&apos;re looking for passionate engineers who love building scalable
+                        products, solving real-world problems, and growing alongside a talented team.
                     </p>
                 </div>
 
-                <div ref={cardsRef} className="space-y-8">
-
-                    {/* Card 1: Open Position  */}
-                    <div className="card-hover">
-                        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-                            <div>
-                                <p className="text-brand text-sm font-semibold uppercase tracking-wide mb-2">
-                                    Open Position
-                                </p>
-
-                                <h3 className="font-display text-3xl font-bold mb-2">
-                                    {CAREERS.role}
-                                </h3>
-
-                                <p>Experience: {CAREERS.experience}</p>
-                            </div>
-
-                            <a
-                                href={CAREERS.apply.url}
-                                className="btn btn-primary"
-                            >
-                                Apply Now
-                            </a>
-                        </div>
-
-                        <p className="mt-6">{CAREERS.description}</p>
-                    </div>
-
-                    {/*Card 2: Skills Grid */}
-                    <div className="grid md:grid-cols-2 gap-6">
-
-                        {/* Frontend */}
-                        <div className="card-hover">
-                            <h3 className="text-xl font-semibold text-brand mb-6">
-                                Frontend
-                            </h3>
-
-                            {/* className used as GSAP selector target */}
-                            <div className="frontend-skills space-y-5">
-                                {CAREERS.frontend.map((skill) => (
-                                    <div key={skill.title}>
-                                        <h4 className="font-display text-lg font-semibold">
-                                            {skill.title}
-                                        </h4>
-                                        <p className="text-sm mt-1">
-                                            {skill.description}
-                                        </p>
+                <div ref={listRef} className="space-y-4 mb-10">
+                    {CAREERS_LISTINGS.map((job, i) => (
+                        <Link
+                            key={job.slug}
+                            to={`/careers#${job.slug}`}
+                            className="job-row group flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 card-hover no-underline hover:border-brand/40 transition-colors"
+                            aria-label={`View ${job.role} listing`}
+                        >
+                            <div className="flex items-center gap-5">
+                                <span className="font-display font-black text-3xl text-brand/20 group-hover:text-brand/40 transition-colors select-none w-8 shrink-0">
+                                    {String(i + 1).padStart(2, '0')}
+                                </span>
+                                <div>
+                                    <p className="font-display font-bold text-xl group-hover:text-brand transition-colors">
+                                        {job.role}
+                                    </p>
+                                    <div className="flex flex-wrap gap-2 mt-1.5">
+                                        {[job.type, job.experience, job.location].map(tag => (
+                                            <span
+                                                key={tag}
+                                                className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-brand/10 text-brand border border-brand/15"
+                                            >
+                                                {tag}
+                                            </span>
+                                        ))}
                                     </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Backend */}
-                        <div className="card-hover">
-                            <h3 className="text-xl font-semibold text-brand mb-6">
-                                Backend
-                            </h3>
-
-                            {/* className used as GSAP selector target */}
-                            <div className="backend-skills space-y-5">
-                                {CAREERS.backend.map((skill) => (
-                                    <div key={skill.title}>
-                                        <h4 className="font-display text-lg font-semibold">
-                                            {skill.title}
-                                        </h4>
-                                        <p className="text-sm mt-1">
-                                            {skill.description}
-                                        </p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-
-                    {/*  Card 3: Why Join Us */}
-                    <div className="card-hover">
-                        <h3 className="text-2xl font-display font-semibold mb-6">
-                            Why Join Us?
-                        </h3>
-
-                        {/* className used as GSAP selector target */}
-                        <div className="benefits-grid grid md:grid-cols-2 gap-4">
-                            {CAREERS.benefits.map((benefit) => (
-                                <div
-                                    key={benefit}
-                                    className="flex items-center gap-3"
-                                >
-                                    <span className="badge-dot" />
-                                    <span>{benefit}</span>
                                 </div>
-                            ))}
-                        </div>
-                    </div>
+                            </div>
 
+                            <span className="inline-flex items-center gap-2 text-sm font-semibold text-brand opacity-0 group-hover:opacity-100 translate-x-0 group-hover:translate-x-1 transition-all duration-200 shrink-0">
+                                View Details
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                            </span>
+                        </Link>
+                    ))}
                 </div>
+
+                <div className="flex items-center gap-4">
+                    <Link to="/careers" className="btn btn-primary">
+                        View All Openings
+                    </Link>
+                    <span className="text-sm text-[var(--color-ink-muted)]">
+                        {CAREERS_META.subheadline}
+                    </span>
+                </div>
+
             </div>
         </section>
     );

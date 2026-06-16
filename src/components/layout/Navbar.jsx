@@ -241,7 +241,7 @@ export default function Navbar() {
                                 onClick={handleContactClick}
                                 className="btn btn-primary text-xs px-3 py-1.5"
                             >
-                                Let's talk
+                                Get in touch
                                 <svg width="11" height="11" viewBox="0 0 14 14" fill="none">
                                     <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
@@ -284,7 +284,7 @@ export default function Navbar() {
                             onClick={handleContactClick}
                             className="hidden sm:flex btn btn-primary shrink-0 text-xs sm:text-sm px-3 sm:px-5 py-2 sm:py-2.5"
                         >
-                            Let's talk
+                            Get in touch
                             <svg width="12" height="12" viewBox="0 0 14 14" fill="none" className="sm:w-3.5 sm:h-3.5">
                                 <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>

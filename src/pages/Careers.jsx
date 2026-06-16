@@ -1,11 +1,11 @@
 import { useEffect, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { CAREERS_PAGE } from '../assets';
+import { CAREERS_LISTINGS, CAREERS_META } from '../assets';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Inline SVG icons for each tech skill — no external icon dep needed
 const SKILL_ICONS = {
     React: (
         <svg viewBox="0 0 32 32" width="32" height="32" fill="none">
@@ -51,14 +51,73 @@ const SKILL_ICONS = {
             <ellipse cx="16" cy="9" rx="9" ry="4" fill="none" stroke="#6BA4CE" strokeWidth="1.5" />
         </svg>
     ),
+    'React Native': (
+        <svg viewBox="0 0 32 32" width="32" height="32" fill="none">
+            <circle cx="16" cy="16" r="3" fill="#61DAFB" />
+            <ellipse cx="16" cy="16" rx="14" ry="5.5" stroke="#61DAFB" strokeWidth="1.6" fill="none" />
+            <ellipse cx="16" cy="16" rx="14" ry="5.5" stroke="#61DAFB" strokeWidth="1.6" fill="none" transform="rotate(60 16 16)" />
+            <ellipse cx="16" cy="16" rx="14" ry="5.5" stroke="#61DAFB" strokeWidth="1.6" fill="none" transform="rotate(120 16 16)" />
+        </svg>
+    ),
+    Expo: (
+        <svg viewBox="0 0 32 32" width="32" height="32" fill="none">
+            <rect width="32" height="32" rx="6" fill="#000020" />
+            <text x="5" y="23" fontFamily="monospace" fontWeight="bold" fontSize="12" fill="white">expo</text>
+        </svg>
+    ),
+    'Android / Kotlin': (
+        <svg viewBox="0 0 32 32" width="32" height="32" fill="none">
+            <rect width="32" height="32" rx="6" fill="#A97BFF" />
+            <text x="5" y="22" fontFamily="monospace" fontWeight="bold" fontSize="11" fill="white">KT</text>
+        </svg>
+    ),
+    'REST / GraphQL': (
+        <svg viewBox="0 0 32 32" width="32" height="32" fill="none">
+            <circle cx="16" cy="16" r="12" stroke="#E10098" strokeWidth="2" />
+            <circle cx="16" cy="7"  r="2.5" fill="#E10098" />
+            <circle cx="16" cy="25" r="2.5" fill="#E10098" />
+            <circle cx="7"  cy="20" r="2.5" fill="#E10098" />
+            <circle cx="25" cy="20" r="2.5" fill="#E10098" />
+            <circle cx="7"  cy="12" r="2.5" fill="#E10098" />
+            <circle cx="25" cy="12" r="2.5" fill="#E10098" />
+        </svg>
+    ),
+    Firebase: (
+        <svg viewBox="0 0 32 32" width="32" height="32" fill="none">
+            <path d="M5 25l5-13 4 6 4-14 9 21H5z" fill="#FFA000" />
+            <path d="M13 18l4-6 4 13H5l4-7z" fill="#F57C00" opacity="0.6" />
+        </svg>
+    ),
 };
 
-// Single skill row: icon + title + description
+const GROUP_ICONS = {
+    monitor: (
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="3" width="16" height="12" rx="2" stroke="white" strokeWidth="1.6" />
+            <path d="M6 17h8" stroke="white" strokeWidth="1.6" strokeLinecap="round" />
+        </svg>
+    ),
+    server: (
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="4"  width="16" height="5" rx="1.5" stroke="white" strokeWidth="1.6" />
+            <rect x="2" y="11" width="16" height="5" rx="1.5" stroke="white" strokeWidth="1.6" />
+            <circle cx="15" cy="6.5"  r="1" fill="white" />
+            <circle cx="15" cy="13.5" r="1" fill="white" />
+        </svg>
+    ),
+    mobile: (
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+            <rect x="5" y="2" width="10" height="16" rx="2" stroke="white" strokeWidth="1.6" />
+            <circle cx="10" cy="15" r="1" fill="white" />
+        </svg>
+    ),
+};
+
 function SkillRow({ title, desc }) {
     return (
         <div className="flex items-start gap-4">
             <div className="shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-surface-raised border border-[var(--color-border)]">
-                {SKILL_ICONS[title] ?? <span className="text-xl">⚙️</span>}
+                {SKILL_ICONS[title] ?? <span className="text-xl">&#9881;</span>}
             </div>
             <div>
                 <p className="font-display font-semibold text-base">{title}</p>
@@ -68,192 +127,260 @@ function SkillRow({ title, desc }) {
     );
 }
 
-export default function Careers() {
-    const pageRef = useRef(null);
+function MetaPill({ icon, label }) {
+    return (
+        <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold bg-brand text-white">
+            {icon}
+            {label}
+        </span>
+    );
+}
+
+const BriefcaseIcon = (
+    <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
+        <rect x="2" y="6" width="16" height="12" rx="2" stroke="white" strokeWidth="1.6" />
+        <path d="M7 6V4a3 3 0 016 0v2" stroke="white" strokeWidth="1.6" />
+    </svg>
+);
+const PinIcon = (
+    <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
+        <path d="M10 2a6 6 0 016 6c0 4-6 10-6 10S4 12 4 8a6 6 0 016-6z" stroke="white" strokeWidth="1.6" />
+        <circle cx="10" cy="8" r="2" stroke="white" strokeWidth="1.4" />
+    </svg>
+);
+
+function JobListing({ job }) {
+    const cardRef   = useRef(null);
     const headerRef = useRef(null);
-    const gridRef = useRef(null);
-    const whyRef = useRef(null);
-    const ctaRef = useRef(null);
+    const skillsRef = useRef(null);
+    const whyRef    = useRef(null);
+    const ctaRef    = useRef(null);
 
     useEffect(() => {
-        window.scrollTo({ top: 0 });
-
         const ctx = gsap.context(() => {
-            // Hero header: badge → title → pill → description cascade on mount
             gsap.fromTo(
                 headerRef.current.querySelectorAll('.h-anim'),
                 { y: 28, opacity: 0 },
-                { y: 0, opacity: 1, duration: 0.7, stagger: 0.12, ease: 'power3.out', delay: 0.15 }
+                { y: 0, opacity: 1, duration: 0.7, stagger: 0.12, ease: 'power3.out', delay: 0.1 }
             );
 
-            // Skill columns slide up when scrolled into view
-            const cols = gridRef.current.querySelectorAll('.skill-col');
+            const cols = skillsRef.current.querySelectorAll('.skill-col');
             gsap.fromTo(
                 cols,
                 { y: 40, opacity: 0 },
-                {
-                    y: 0, opacity: 1, duration: 0.65, stagger: 0.15, ease: 'power3.out',
-                    scrollTrigger: { trigger: gridRef.current, start: 'top 82%' },
-                }
+                { y: 0, opacity: 1, duration: 0.65, stagger: 0.15, ease: 'power3.out',
+                  scrollTrigger: { trigger: skillsRef.current, start: 'top 82%' } }
             );
 
-            // Individual skill rows stagger inside each column
             cols.forEach(col => {
                 gsap.fromTo(
                     col.querySelectorAll('.skill-row'),
                     { x: -12, opacity: 0 },
-                    {
-                        x: 0, opacity: 1, duration: 0.4, stagger: 0.08, ease: 'power2.out',
-                        scrollTrigger: { trigger: col, start: 'top 85%' },
-                    }
+                    { x: 0, opacity: 1, duration: 0.4, stagger: 0.08, ease: 'power2.out',
+                      scrollTrigger: { trigger: col, start: 'top 85%' } }
                 );
             });
 
-            // Why Join Us bullet items stagger in from the left
             gsap.fromTo(
                 whyRef.current.querySelectorAll('.why-item'),
                 { x: -16, opacity: 0 },
-                {
-                    x: 0, opacity: 1, duration: 0.4, stagger: 0.07, ease: 'power2.out',
-                    scrollTrigger: { trigger: whyRef.current, start: 'top 85%' },
-                }
+                { x: 0, opacity: 1, duration: 0.4, stagger: 0.07, ease: 'power2.out',
+                  scrollTrigger: { trigger: whyRef.current, start: 'top 85%' } }
             );
 
-            // Apply CTA card fades up last
             gsap.fromTo(
                 ctaRef.current,
                 { y: 30, opacity: 0 },
-                {
-                    y: 0, opacity: 1, duration: 0.65, ease: 'power3.out',
-                    scrollTrigger: { trigger: ctaRef.current, start: 'top 88%' },
-                }
+                { y: 0, opacity: 1, duration: 0.65, ease: 'power3.out',
+                  scrollTrigger: { trigger: ctaRef.current, start: 'top 88%' } }
             );
-        }, pageRef);
+        }, cardRef);
 
         return () => ctx.revert();
+    }, [job.slug]);
+
+    return (
+        <section
+            id={job.slug}
+            ref={cardRef}
+            className="scroll-mt-28 space-y-8"
+            aria-labelledby={`job-title-${job.slug}`}
+        >
+            <div ref={headerRef} className="max-w-2xl">
+                <div className="h-anim section-eyebrow">
+                    <span className="badge-dot" />
+                    <span className="badge-label">{job.badge}</span>
+                </div>
+
+                <h2
+                    id={`job-title-${job.slug}`}
+                    className="h-anim font-display font-black tracking-tight leading-tight mb-4"
+                    style={{ fontSize: 'clamp(1.75rem, 3vw, 2.5rem)' }}
+                >
+                    {job.role}
+                </h2>
+
+                <div className="h-anim flex flex-wrap items-center gap-2 mb-5">
+                    <MetaPill icon={BriefcaseIcon} label={`Experience: ${job.experience}`} />
+                    {job.location && <MetaPill icon={PinIcon} label={job.location} />}
+                </div>
+
+                <p className="h-anim text-base leading-relaxed text-[var(--color-ink-soft)]">
+                    {job.description}
+                </p>
+            </div>
+
+            <div ref={skillsRef} className="grid md:grid-cols-2 gap-6">
+                {job.skillGroups.map(group => (
+                    <div key={group.label} className="card-hover skill-col space-y-6">
+                        <div className="flex items-center gap-3 pb-2 border-b border-[var(--color-border)]">
+                            <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-brand text-white">
+                                {GROUP_ICONS[group.icon] ?? GROUP_ICONS.server}
+                            </div>
+                            <h3 className="font-display font-bold text-xl tracking-wide text-brand">
+                                {group.label}
+                            </h3>
+                        </div>
+                        {group.items.map(skill => (
+                            <div key={skill.title} className="skill-row">
+                                <SkillRow title={skill.title} desc={skill.desc} />
+                            </div>
+                        ))}
+                    </div>
+                ))}
+            </div>
+
+            <div className="grid lg:grid-cols-2 gap-6">
+                <div ref={whyRef} className="card-hover">
+                    <div className="flex items-center gap-3 mb-5">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm0 0v4m0 4v1m-4-5h8" stroke="var(--color-brand)" strokeWidth="1.6" strokeLinecap="round" />
+                        </svg>
+                        <h3 className="font-display font-bold text-xl">Why Join Us?</h3>
+                    </div>
+                    <ul className="space-y-3">
+                        {job.whyJoinUs.map(item => (
+                            <li key={item} className="why-item flex items-start gap-3">
+                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="shrink-0 mt-0.5">
+                                    <circle cx="9" cy="9" r="8" fill="var(--color-brand)" opacity="0.12" />
+                                    <path d="M5.5 9l2.5 2.5 4.5-4.5" stroke="var(--color-brand)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                                <span className="text-sm leading-relaxed text-[var(--color-ink-soft)]">{item}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+                <div
+                    ref={ctaRef}
+                    className="card-hover flex flex-col justify-center gap-4 bg-surface-dark border border-white/5"
+                >
+                    <h3 className="font-display font-bold text-2xl text-white tracking-tight">
+                        Interested in this role?
+                    </h3>
+                    <p className="text-sm text-white/60 leading-relaxed">
+                        We&apos;d love to hear from you. Send your resume to{' '}
+                        <a
+                            href={job.apply.mailto}
+                            className="text-white underline underline-offset-2 hover:text-white/80 transition-colors"
+                        >
+                            {job.apply.email}
+                        </a>
+                        {' '}and we&apos;ll get back to you shortly.
+                    </p>
+                    <p className="text-xs text-white/35 italic">{job.apply.tagline}</p>
+                </div>
+            </div>
+        </section>
+    );
+}
+
+function JobNav({ listings, activeSlug, onSelect }) {
+    return (
+        <nav aria-label="Job listings navigation" className="flex flex-wrap gap-2">
+            {listings.map(job => {
+                const isActive = job.slug === activeSlug;
+                return (
+                    <button
+                        key={job.slug}
+                        onClick={() => onSelect(job.slug)}
+                        aria-current={isActive ? 'true' : undefined}
+                        className={[
+                            'px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-200',
+                            isActive
+                                ? 'bg-brand text-white shadow-sm'
+                                : 'bg-surface-raised border border-[var(--color-border)] text-[var(--color-ink-soft)] hover:border-brand hover:text-brand',
+                        ].join(' ')}
+                    >
+                        {job.role}
+                    </button>
+                );
+            })}
+        </nav>
+    );
+}
+
+export default function Careers() {
+    const pageRef  = useRef(null);
+    const heroRef  = useRef(null);
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const activeSlug =
+        location.hash
+            ? location.hash.replace('#', '')
+            : (CAREERS_LISTINGS[0]?.slug ?? '');
+
+    const activeJob = CAREERS_LISTINGS.find(j => j.slug === activeSlug) ?? CAREERS_LISTINGS[0];
+
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, [activeSlug]);
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            gsap.fromTo(
+                heroRef.current.querySelectorAll('.hero-anim'),
+                { y: 24, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.65, stagger: 0.1, ease: 'power3.out', delay: 0.15 }
+            );
+        }, pageRef);
+        return () => ctx.revert();
     }, []);
+
+    const handleJobSelect = (slug) => {
+        navigate(`/careers#${slug}`, { replace: false });
+    };
 
     return (
         <div ref={pageRef} className="section pt-[calc(var(--section-py)+4rem)]">
             <div className="container-custom space-y-14">
 
-                {/* Page header: badge, role title, experience pill, description */}
-                <div ref={headerRef} className="max-w-2xl">
-                    <div className="h-anim section-eyebrow">
+                <div ref={heroRef} className="max-w-2xl space-y-5">
+                    <div className="hero-anim section-eyebrow">
                         <span className="badge-dot" />
-                        <span className="badge-label">{CAREERS_PAGE.badge}</span>
+                        <span className="badge-label">{CAREERS_META.badge}</span>
                     </div>
 
-                    <h1 className="h-anim font-display font-black tracking-tight leading-none mb-4 text-[length:var(--text-hero)]">
-                        {CAREERS_PAGE.role}
+                    <h1 className="hero-anim font-display font-black tracking-tight leading-none text-[length:var(--text-hero)]">
+                        {CAREERS_META.headline}
                     </h1>
 
-                    <div className="h-anim flex items-center gap-2 mb-6">
-                        <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold bg-brand text-white">
-                            <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-                                <rect x="2" y="6" width="16" height="12" rx="2" stroke="white" strokeWidth="1.6" />
-                                <path d="M7 6V4a3 3 0 016 0v2" stroke="white" strokeWidth="1.6" />
-                            </svg>
-                            Experience: {CAREERS_PAGE.experience}
-                        </span>
-                    </div>
-
-                    <p className="h-anim text-lg leading-relaxed text-[var(--color-ink-soft)]">
-                        {CAREERS_PAGE.description}
+                    <p className="hero-anim text-lg leading-relaxed text-[var(--color-ink-soft)]">
+                        {CAREERS_META.subheadline}
                     </p>
-                </div>
 
-                {/* Frontend and Backend skill cards side by side */}
-                <div ref={gridRef} className="grid md:grid-cols-2 gap-6">
-
-                    {/* Frontend skills */}
-                    <div className="card-hover skill-col space-y-6">
-                        <div className="flex items-center gap-3 pb-2 border-b border-[var(--color-border)]">
-                            <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-brand text-white">
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-                                    <rect x="2" y="3" width="16" height="12" rx="2" stroke="white" strokeWidth="1.6" />
-                                    <path d="M6 17h8" stroke="white" strokeWidth="1.6" strokeLinecap="round" />
-                                </svg>
-                            </div>
-                            <h2 className="font-display font-bold text-xl tracking-wide text-brand">Frontend</h2>
-                        </div>
-                        {CAREERS_PAGE.frontend.map(s => (
-                            <div key={s.title} className="skill-row">
-                                <SkillRow title={s.title} desc={s.desc} />
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* Backend skills */}
-                    <div className="card-hover skill-col space-y-6">
-                        <div className="flex items-center gap-3 pb-2 border-b border-[var(--color-border)]">
-                            <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-brand text-white">
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-                                    <circle cx="10" cy="10" r="7" stroke="white" strokeWidth="1.6" />
-                                    <path d="M10 7v3l2 2" stroke="white" strokeWidth="1.6" strokeLinecap="round" />
-                                </svg>
-                            </div>
-                            <h2 className="font-display font-bold text-xl tracking-wide text-brand">Backend</h2>
-                        </div>
-                        {CAREERS_PAGE.backend.map(s => (
-                            <div key={s.title} className="skill-row">
-                                <SkillRow title={s.title} desc={s.desc} />
-                            </div>
-                        ))}
+                    <div className="hero-anim">
+                        <JobNav
+                            listings={CAREERS_LISTINGS}
+                            activeSlug={activeSlug}
+                            onSelect={handleJobSelect}
+                        />
                     </div>
                 </div>
 
-                {/* Why Join Us and Apply CTA side by side */}
-                <div className="grid lg:grid-cols-2 gap-6">
+                {activeJob && <JobListing key={activeJob.slug} job={activeJob} />}
 
-                    {/* Why Join Us bullet list */}
-                    <div ref={whyRef} className="card-hover">
-                        <div className="flex items-center gap-3 mb-6">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm0 0v4m0 4v1m-4-5h8" stroke="var(--color-brand)" strokeWidth="1.6" strokeLinecap="round" />
-                            </svg>
-                            <h2 className="font-display font-bold text-xl">Why Join Us?</h2>
-                        </div>
-                        <ul className="space-y-3">
-                            {CAREERS_PAGE.whyJoinUs.map(item => (
-                                <li key={item} className="why-item flex items-start gap-3">
-                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="shrink-0 mt-0.5">
-                                        <circle cx="9" cy="9" r="8" fill="var(--color-brand)" opacity="0.12" />
-                                        <path d="M5.5 9l2.5 2.5 4.5-4.5" stroke="var(--color-brand)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                    <span className="text-sm leading-relaxed text-[var(--color-ink-soft)]">{item}</span>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/* Apply Now dark CTA card */}
-                    <div
-                        ref={ctaRef}
-                        className="card-hover flex flex-col justify-between gap-8 bg-surface-dark border border-white/5"
-                    >
-                        <div>
-                            <h2 className="font-display font-black text-[length:var(--text-h2)] text-white tracking-tight leading-tight mb-2">
-                                Apply Now!
-                            </h2>
-                            <p className="text-sm text-white/55">We're building something meaningful—come build it with us</p>
-                        </div>
-
-                        <div>
-                            <a
-                                href={CAREERS_PAGE.apply.mailto}
-                                className="btn btn-primary block w-full text-center mb-5"
-                            >
-                                Send your resume to →
-                            </a>
-
-                            <p className="text-center italic text-sm text-white/50">
-                                {CAREERS_PAGE.apply.tagline}
-                            </p>
-                        </div>
-                    </div>
-
-                </div>
             </div>
         </div>
     );

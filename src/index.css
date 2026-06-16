@@ -72,8 +72,8 @@
   --tracking-upper:  0.22em;
 
   /* ── Spacing ── */
-  --section-py:    clamp(6rem, 8vw, 9rem);
-  --section-py-sm: clamp(6rem, 7vw, 7rem);
+  --section-py:    clamp(3.5rem, 5vw, 5rem);
+  --section-py-sm: clamp(3rem, 4vw, 4rem);
   --container-max: 87.5rem;
   --container-px:  clamp(1rem, 3vw, 2rem);
 
