@@ -39,13 +39,21 @@ async function submitToSheet(form, retries = 2) {
     for (let attempt = 0; attempt <= retries; attempt++) {
         try {
             const url = `${CONTACT_FORM.scriptUrl}?${new URLSearchParams(payload)}`;
-            const res = await fetch(url, { method: 'GET' });
+            const res = await fetch(url, { method: 'GET', redirect: 'follow' });
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            const json = await res.json();
-            if (!json.success) throw new Error(json.errors?.join(' ') || 'Unknown error');
+
+            // GAS /exec endpoints can return an HTML redirect page instead of JSON.
+            // Read as text first and guard before parsing.
+            const text = await res.text();
+            if (!text || text.trimStart().startsWith('<')) {
+                throw new Error('Unexpected response from server.');
+            }
+
+            const json = JSON.parse(text);
+            if (!json.success) throw new Error('Submission failed. Please try again.');
             return { ok: true };
         } catch (err) {
-            if (attempt === retries) return { ok: false, message: err.message };
+            if (attempt === retries) return { ok: false };
             await new Promise(r => setTimeout(r, 800 * Math.pow(2, attempt)));
         }
     }
@@ -60,7 +68,6 @@ export default function ContactSection() {
     const [form, setForm] = useState(EMPTY_FORM);
     const [touched, setTouched] = useState({});
     const [status, setStatus] = useState('idle'); // idle|submitting|success|error
-    const [serverMsg, setServerMsg] = useState('');
     const [charCount, setCharCount] = useState(0);
 
     const { isThrottled, throttleReason, secondsLeft, markSubmitted } = useFormThrottle();
@@ -106,10 +113,9 @@ export default function ContactSection() {
         e.preventDefault();
         setTouched({ name: true, email: true, domain: true, query: true });
         if (!isFormValid) return;
-        if (isThrottled) { setStatus('error'); setServerMsg(throttleReason); return; }
+        if (isThrottled) { setStatus('error'); return; }
 
         setStatus('submitting');
-        setServerMsg('');
         const result = await submitToSheet(form);
 
         if (result.ok) {
@@ -120,7 +126,6 @@ export default function ContactSection() {
             setCharCount(0);
         } else {
             setStatus('error');
-            setServerMsg(result.message || 'Something went wrong. Please try again.');
         }
     };
 
@@ -276,7 +281,7 @@ export default function ContactSection() {
                                             <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.8" />
                                             <path d="M12 8v4m0 4h.01" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
                                         </svg>
-                                        <span>{serverMsg}</span>
+                                        <span>Something went wrong. Please try again.</span>
                                     </div>
                                 )}
 
