@@ -55,7 +55,7 @@ export default function CareersSection() {
                 </div>
 
                 <div ref={listRef} className="space-y-4 mb-10">
-                    {CAREERS_LISTINGS.map((job, i) => (
+                    {CAREERS_LISTINGS.filter(job => job.active !== false).map((job, i) => (
                         <Link
                             key={job.slug}
                             to={`/careers#${job.slug}`}

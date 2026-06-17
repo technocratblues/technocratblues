@@ -74,11 +74,11 @@ const SKILL_ICONS = {
     'REST / GraphQL': (
         <svg viewBox="0 0 32 32" width="32" height="32" fill="none">
             <circle cx="16" cy="16" r="12" stroke="#E10098" strokeWidth="2" />
-            <circle cx="16" cy="7"  r="2.5" fill="#E10098" />
+            <circle cx="16" cy="7" r="2.5" fill="#E10098" />
             <circle cx="16" cy="25" r="2.5" fill="#E10098" />
-            <circle cx="7"  cy="20" r="2.5" fill="#E10098" />
+            <circle cx="7" cy="20" r="2.5" fill="#E10098" />
             <circle cx="25" cy="20" r="2.5" fill="#E10098" />
-            <circle cx="7"  cy="12" r="2.5" fill="#E10098" />
+            <circle cx="7" cy="12" r="2.5" fill="#E10098" />
             <circle cx="25" cy="12" r="2.5" fill="#E10098" />
         </svg>
     ),
@@ -90,6 +90,8 @@ const SKILL_ICONS = {
     ),
 };
 
+// GROUP ICONS — keyed by the `icon` field in each skillGroup in assets.js
+
 const GROUP_ICONS = {
     monitor: (
         <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
@@ -99,9 +101,9 @@ const GROUP_ICONS = {
     ),
     server: (
         <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-            <rect x="2" y="4"  width="16" height="5" rx="1.5" stroke="white" strokeWidth="1.6" />
+            <rect x="2" y="4" width="16" height="5" rx="1.5" stroke="white" strokeWidth="1.6" />
             <rect x="2" y="11" width="16" height="5" rx="1.5" stroke="white" strokeWidth="1.6" />
-            <circle cx="15" cy="6.5"  r="1" fill="white" />
+            <circle cx="15" cy="6.5" r="1" fill="white" />
             <circle cx="15" cy="13.5" r="1" fill="white" />
         </svg>
     ),
@@ -113,20 +115,57 @@ const GROUP_ICONS = {
     ),
 };
 
+// ─────────────────────────────────────────────────────────────────────────────
+// INLINE SVG ATOMS — kept here to avoid prop drilling; too small for assets.js
+// ─────────────────────────────────────────────────────────────────────────────
+const BriefcaseIcon = (
+    <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
+        <rect x="2" y="6" width="16" height="12" rx="2" stroke="white" strokeWidth="1.6" />
+        <path d="M7 6V4a3 3 0 016 0v2" stroke="white" strokeWidth="1.6" />
+    </svg>
+);
+
+const PinIcon = (
+    <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
+        <path d="M10 2a6 6 0 016 6c0 4-6 10-6 10S4 12 4 8a6 6 0 016-6z" stroke="white" strokeWidth="1.6" />
+        <circle cx="10" cy="8" r="2" stroke="white" strokeWidth="1.4" />
+    </svg>
+);
+
+const CheckIcon = (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="shrink-0 mt-0.5">
+        <circle cx="9" cy="9" r="8" fill="currentColor" className="opacity-[0.12]" />
+        <path d="M5.5 9l2.5 2.5 4.5-4.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+);
+
+const WhyIcon = (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm0 0v4m0 4v1m-4-5h8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SKILL ROW
+// ─────────────────────────────────────────────────────────────────────────────
 function SkillRow({ title, desc }) {
     return (
         <div className="flex items-start gap-4">
-            <div className="shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-surface-raised border border-[var(--color-border)]">
+            {/* Icon box — bg-surface-raised and border use CSS-variable utilities from index.css */}
+            <div className="shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-surface-raised border border-(--color-border)">
                 {SKILL_ICONS[title] ?? <span className="text-xl">&#9881;</span>}
             </div>
             <div>
                 <p className="font-display font-semibold text-base">{title}</p>
-                <p className="text-sm leading-relaxed text-[var(--color-ink-muted)]">{desc}</p>
+                <p className="text-sm leading-relaxed text-(--color-ink-muted)">{desc}</p>
             </div>
         </div>
     );
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// META PILL  (experience / location badges in the job header)
+// ─────────────────────────────────────────────────────────────────────────────
 function MetaPill({ icon, label }) {
     return (
         <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold bg-brand text-white">
@@ -136,63 +175,66 @@ function MetaPill({ icon, label }) {
     );
 }
 
-const BriefcaseIcon = (
-    <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-        <rect x="2" y="6" width="16" height="12" rx="2" stroke="white" strokeWidth="1.6" />
-        <path d="M7 6V4a3 3 0 016 0v2" stroke="white" strokeWidth="1.6" />
-    </svg>
-);
-const PinIcon = (
-    <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-        <path d="M10 2a6 6 0 016 6c0 4-6 10-6 10S4 12 4 8a6 6 0 016-6z" stroke="white" strokeWidth="1.6" />
-        <circle cx="10" cy="8" r="2" stroke="white" strokeWidth="1.4" />
-    </svg>
-);
-
+// ─────────────────────────────────────────────────────────────────────────────
+// JOB LISTING
+// ─────────────────────────────────────────────────────────────────────────────
 function JobListing({ job }) {
-    const cardRef   = useRef(null);
+    const cardRef = useRef(null);
     const headerRef = useRef(null);
     const skillsRef = useRef(null);
-    const whyRef    = useRef(null);
-    const ctaRef    = useRef(null);
+    const whyRef = useRef(null);
+    const ctaRef = useRef(null);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
+            // Header — runs on mount, no ScrollTrigger needed 
             gsap.fromTo(
                 headerRef.current.querySelectorAll('.h-anim'),
                 { y: 28, opacity: 0 },
-                { y: 0, opacity: 1, duration: 0.7, stagger: 0.12, ease: 'power3.out', delay: 0.1 }
+                { y: 0, opacity: 1, duration: 0.7, stagger: 0.12, ease: 'power3.out', delay: 0.1 },
             );
 
+            // Skill columns slide up as they enter the viewport
             const cols = skillsRef.current.querySelectorAll('.skill-col');
             gsap.fromTo(
                 cols,
                 { y: 40, opacity: 0 },
-                { y: 0, opacity: 1, duration: 0.65, stagger: 0.15, ease: 'power3.out',
-                  scrollTrigger: { trigger: skillsRef.current, start: 'top 82%' } }
+                {
+                    y: 0, opacity: 1, duration: 0.65, stagger: 0.15, ease: 'power3.out',
+                    scrollTrigger: { trigger: skillsRef.current, start: 'top 82%' },
+                },
             );
 
+            // Individual skill rows slide in from the left within each column
             cols.forEach(col => {
                 gsap.fromTo(
                     col.querySelectorAll('.skill-row'),
                     { x: -12, opacity: 0 },
-                    { x: 0, opacity: 1, duration: 0.4, stagger: 0.08, ease: 'power2.out',
-                      scrollTrigger: { trigger: col, start: 'top 85%' } }
+                    {
+                        x: 0, opacity: 1, duration: 0.4, stagger: 0.08, ease: 'power2.out',
+                        scrollTrigger: { trigger: col, start: 'top 85%' },
+                    },
                 );
             });
 
+            // "Why Join Us" list items
             gsap.fromTo(
                 whyRef.current.querySelectorAll('.why-item'),
                 { x: -16, opacity: 0 },
-                { x: 0, opacity: 1, duration: 0.4, stagger: 0.07, ease: 'power2.out',
-                  scrollTrigger: { trigger: whyRef.current, start: 'top 85%' } }
+                {
+                    x: 0, opacity: 1, duration: 0.4, stagger: 0.07, ease: 'power2.out',
+                    scrollTrigger: { trigger: whyRef.current, start: 'top 85%' },
+                },
             );
 
+            // CTA card
             gsap.fromTo(
                 ctaRef.current,
                 { y: 30, opacity: 0 },
-                { y: 0, opacity: 1, duration: 0.65, ease: 'power3.out',
-                  scrollTrigger: { trigger: ctaRef.current, start: 'top 88%' } }
+                {
+                    y: 0, opacity: 1, duration: 0.65, ease: 'power3.out',
+                    scrollTrigger: { trigger: ctaRef.current, start: 'top 88%' },
+                },
             );
         }, cardRef);
 
@@ -206,6 +248,7 @@ function JobListing({ job }) {
             className="scroll-mt-28 space-y-8"
             aria-labelledby={`job-title-${job.slug}`}
         >
+            {/* ── Header ── */}
             <div ref={headerRef} className="max-w-2xl">
                 <div className="h-anim section-eyebrow">
                     <span className="badge-dot" />
@@ -225,15 +268,16 @@ function JobListing({ job }) {
                     {job.location && <MetaPill icon={PinIcon} label={job.location} />}
                 </div>
 
-                <p className="h-anim text-base leading-relaxed text-[var(--color-ink-soft)]">
+                <p className="h-anim text-base leading-relaxed text-(--color-ink-soft)">
                     {job.description}
                 </p>
             </div>
 
+            {/* ── Skill groups grid ── */}
             <div ref={skillsRef} className="grid md:grid-cols-2 gap-6">
                 {job.skillGroups.map(group => (
                     <div key={group.label} className="card-hover skill-col space-y-6">
-                        <div className="flex items-center gap-3 pb-2 border-b border-[var(--color-border)]">
+                        <div className="flex items-center gap-3 pb-2 border-b border-(--color-border)">
                             <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-brand text-white">
                                 {GROUP_ICONS[group.icon] ?? GROUP_ICONS.server}
                             </div>
@@ -250,27 +294,26 @@ function JobListing({ job }) {
                 ))}
             </div>
 
+            {/* ── Why Join Us + CTA ── */}
             <div className="grid lg:grid-cols-2 gap-6">
+
+                {/* Why Join Us */}
                 <div ref={whyRef} className="card-hover">
-                    <div className="flex items-center gap-3 mb-5">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm0 0v4m0 4v1m-4-5h8" stroke="var(--color-brand)" strokeWidth="1.6" strokeLinecap="round" />
-                        </svg>
-                        <h3 className="font-display font-bold text-xl">Why Join Us?</h3>
+                    <div className="flex items-center gap-3 mb-5 text-brand">
+                        {WhyIcon}
+                        <h3 className="font-display font-bold text-xl text-(--color-ink)">Why Join Us?</h3>
                     </div>
                     <ul className="space-y-3">
                         {job.whyJoinUs.map(item => (
-                            <li key={item} className="why-item flex items-start gap-3">
-                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="shrink-0 mt-0.5">
-                                    <circle cx="9" cy="9" r="8" fill="var(--color-brand)" opacity="0.12" />
-                                    <path d="M5.5 9l2.5 2.5 4.5-4.5" stroke="var(--color-brand)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                                <span className="text-sm leading-relaxed text-[var(--color-ink-soft)]">{item}</span>
+                            <li key={item} className="why-item flex items-start gap-3 text-brand">
+                                {CheckIcon}
+                                <span className="text-sm leading-relaxed text-(--color-ink-soft)">{item}</span>
                             </li>
                         ))}
                     </ul>
                 </div>
 
+                {/* Apply CTA */}
                 <div
                     ref={ctaRef}
                     className="card-hover flex flex-col justify-center gap-4 bg-surface-dark border border-white/5"
@@ -290,11 +333,15 @@ function JobListing({ job }) {
                     </p>
                     <p className="text-xs text-white/35 italic">{job.apply.tagline}</p>
                 </div>
+
             </div>
         </section>
     );
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// JOB NAV  — pill buttons to switch between listings
+// ─────────────────────────────────────────────────────────────────────────────
 function JobNav({ listings, activeSlug, onSelect }) {
     return (
         <nav aria-label="Job listings navigation" className="flex flex-wrap gap-2">
@@ -309,7 +356,7 @@ function JobNav({ listings, activeSlug, onSelect }) {
                             'px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-200',
                             isActive
                                 ? 'bg-brand text-white shadow-sm'
-                                : 'bg-surface-raised border border-[var(--color-border)] text-[var(--color-ink-soft)] hover:border-brand hover:text-brand',
+                                : 'bg-surface-raised border border-(--color-border) text-(--color-ink-soft) hover:border-brand hover:text-brand',
                         ].join(' ')}
                     >
                         {job.role}
@@ -320,29 +367,38 @@ function JobNav({ listings, activeSlug, onSelect }) {
     );
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// CAREERS PAGE
+// ─────────────────────────────────────────────────────────────────────────────
 export default function Careers() {
-    const pageRef  = useRef(null);
-    const heroRef  = useRef(null);
+    const pageRef = useRef(null);
+    const heroRef = useRef(null);
     const location = useLocation();
     const navigate = useNavigate();
 
+    const activeListings = CAREERS_LISTINGS.filter(j => j.active !== false);
+
+    // Derive active job from the URL hash; fall back to the first listing
     const activeSlug =
         location.hash
             ? location.hash.replace('#', '')
-            : (CAREERS_LISTINGS[0]?.slug ?? '');
+            : (activeListings[0]?.slug ?? '');
 
-    const activeJob = CAREERS_LISTINGS.find(j => j.slug === activeSlug) ?? CAREERS_LISTINGS[0];
+    const activeJob =
+        activeListings.find(j => j.slug === activeSlug) ?? activeListings[0];
 
+    // Scroll to top whenever the active job changes
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, [activeSlug]);
 
+    // Hero entrance animation (runs once on mount)
     useEffect(() => {
         const ctx = gsap.context(() => {
             gsap.fromTo(
                 heroRef.current.querySelectorAll('.hero-anim'),
                 { y: 24, opacity: 0 },
-                { y: 0, opacity: 1, duration: 0.65, stagger: 0.1, ease: 'power3.out', delay: 0.15 }
+                { y: 0, opacity: 1, duration: 0.65, stagger: 0.1, ease: 'power3.out', delay: 0.15 },
             );
         }, pageRef);
         return () => ctx.revert();
@@ -356,29 +412,34 @@ export default function Careers() {
         <div ref={pageRef} className="section pt-[calc(var(--section-py)+4rem)]">
             <div className="container-custom space-y-14">
 
+                {/* ── Page hero ── */}
                 <div ref={heroRef} className="max-w-2xl space-y-5">
                     <div className="hero-anim section-eyebrow">
                         <span className="badge-dot" />
                         <span className="badge-label">{CAREERS_META.badge}</span>
                     </div>
 
-                    <h1 className="hero-anim font-display font-black tracking-tight leading-none text-[length:var(--text-hero)]">
+                    <h1
+                        className="hero-anim font-display font-black tracking-tight leading-none"
+                        style={{ fontSize: 'var(--text-hero)' }}
+                    >
                         {CAREERS_META.headline}
                     </h1>
 
-                    <p className="hero-anim text-lg leading-relaxed text-[var(--color-ink-soft)]">
+                    <p className="hero-anim text-lg leading-relaxed text-(--color-ink-soft)">
                         {CAREERS_META.subheadline}
                     </p>
 
                     <div className="hero-anim">
                         <JobNav
-                            listings={CAREERS_LISTINGS}
+                            listings={activeListings}
                             activeSlug={activeSlug}
                             onSelect={handleJobSelect}
                         />
                     </div>
                 </div>
 
+                {/* ── Active listing ── */}
                 {activeJob && <JobListing key={activeJob.slug} job={activeJob} />}
 
             </div>

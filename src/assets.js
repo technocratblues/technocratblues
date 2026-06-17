@@ -56,39 +56,6 @@ export const SERVICES = [
   },
 ];
 
-// Process Steps
-export const PROCESS_STEPS = [
-  {
-    num: '01',
-    title: 'Discovery & Strategy',
-    desc: 'We deep-dive into your business goals, user needs, and technical landscape — out comes a crisp product brief and technical spec',
-    duration: '1–2 weeks',
-  },
-  {
-    num: '02',
-    title: 'Architecture & Design',
-    desc: 'System architecture, data models, API contracts, and high-fidelity UI prototypes — all aligned before a line of code is written',
-    duration: '1–3 weeks',
-  },
-  {
-    num: '03',
-    title: 'Agile Development',
-    desc: 'Two-week sprints with daily stand-ups, weekly demos, and continuous integration — you see progress constantly',
-    duration: '4–16 weeks',
-  },
-  {
-    num: '04',
-    title: 'QA & Security Review',
-    desc: 'Unit, integration, and E2E testing — performance profiling, security audit, and a zero-compromise quality gate before any release',
-    duration: '1–2 weeks',
-  },
-  {
-    num: '05',
-    title: 'Launch & Scale',
-    desc: 'Phased rollout with observability dashboards, on-call support, and post-launch optimization sprints',
-    duration: 'Ongoing',
-  },
-];
 
 // About
 export const ABOUT_VALUES = [
@@ -105,7 +72,6 @@ export const CONTACT_FORM = {
 export const CONTACT_DOMAINS = [
   'Web Development',
   'Mobile Development',
-  'Cloud & DevOps',
   'AI / ML Integration',
   'Product Architecture',
   'Tech Consulting',
@@ -116,7 +82,6 @@ export const CONTACT_DOMAINS = [
 export const SOCIAL_LINKS = {
   github:   'https://github.com/technocratblues',
   linkedin: 'https://www.linkedin.com/company/technocrat-blues/posts/',
-  twitter:  'https://twitter.com/technocratblues',
 };
 
 // Capability Card Details
@@ -177,6 +142,7 @@ export const CAREERS_LISTINGS = [
   {
     // ── Full Stack Developer ──────────────────────────────────────────────
     slug:        'full-stack-developer',
+    active:      true,
     badge:       'We Are Hiring',
     role:        'Full Stack Developer',
     type:        'Full-time',
@@ -224,6 +190,7 @@ export const CAREERS_LISTINGS = [
   {
     // ── Mobile Developer ──────────────────────────────────────────────────
     slug:        'mobile-developer',
+    active:      false,           // ← set true to re-enable this listing
     badge:       'We Are Hiring',
     role:        'Mobile Developer',
     type:        'Full-time',
@@ -278,3 +245,35 @@ export const CAREERS_META = {
 
 // Legacy alias — keeps any old import working without a breaking change
 export const CAREERS_PAGE = CAREERS_LISTINGS[0];
+
+
+// ── Hero Stats Strip
+export const STAT_CONFIG = [
+  {
+    key:   'innovation',
+    value: 'Innovation-Driven',
+    label: 'Focused on the future',
+    icon:  'trending-up',
+    color: '#7078D0',
+    glow:  'rgba(112,120,208,0.18)',
+    bar:   1.0,
+  },
+  {
+    key:   'reliable',
+    value: 'Reliable',
+    label: 'by default',
+    icon:  'shield',
+    color: '#5B8DEF',
+    glow:  'rgba(91,141,239,0.18)',
+    bar:   1.0,
+  },
+  {
+    key:   'agile',
+    value: 'Agile',
+    label: 'Fast, adaptive, efficient',
+    icon:  'users',
+    color: '#F59E0B',
+    glow:  'rgba(245,158,11,0.18)',
+    bar:   1.0,
+  },
+];
