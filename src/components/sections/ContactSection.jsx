@@ -39,13 +39,21 @@ async function submitToSheet(form, retries = 2) {
     for (let attempt = 0; attempt <= retries; attempt++) {
         try {
             const url = `${CONTACT_FORM.scriptUrl}?${new URLSearchParams(payload)}`;
-            const res = await fetch(url, { method: 'GET' });
+            const res = await fetch(url, { method: 'GET', redirect: 'follow' });
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            const json = await res.json();
-            if (!json.success) throw new Error(json.errors?.join(' ') || 'Unknown error');
+
+            // GAS /exec endpoints can return an HTML redirect page instead of JSON.
+            // Read as text first and guard before parsing.
+            const text = await res.text();
+            if (!text || text.trimStart().startsWith('<')) {
+                throw new Error('Unexpected response from server.');
+            }
+
+            const json = JSON.parse(text);
+            if (!json.success) throw new Error('Submission failed. Please try again.');
             return { ok: true };
         } catch (err) {
-            if (attempt === retries) return { ok: false, message: err.message };
+            if (attempt === retries) return { ok: false };
             await new Promise(r => setTimeout(r, 800 * Math.pow(2, attempt)));
         }
     }
@@ -60,7 +68,6 @@ export default function ContactSection() {
     const [form, setForm] = useState(EMPTY_FORM);
     const [touched, setTouched] = useState({});
     const [status, setStatus] = useState('idle'); // idle|submitting|success|error
-    const [serverMsg, setServerMsg] = useState('');
     const [charCount, setCharCount] = useState(0);
 
     const { isThrottled, throttleReason, secondsLeft, markSubmitted } = useFormThrottle();
@@ -94,6 +101,7 @@ export default function ContactSection() {
     const handleChange = useCallback((field, value) => {
         setForm(f => ({ ...f, [field]: value }));
         if (field === 'query') setCharCount(value.length);
+        if (field === 'email') setTouched(t => ({ ...t, email: true }));
         if (status === 'error') setStatus('idle');
     }, [status]);
 
@@ -105,10 +113,9 @@ export default function ContactSection() {
         e.preventDefault();
         setTouched({ name: true, email: true, domain: true, query: true });
         if (!isFormValid) return;
-        if (isThrottled) { setStatus('error'); setServerMsg(throttleReason); return; }
+        if (isThrottled) { setStatus('error'); return; }
 
         setStatus('submitting');
-        setServerMsg('');
         const result = await submitToSheet(form);
 
         if (result.ok) {
@@ -119,7 +126,6 @@ export default function ContactSection() {
             setCharCount(0);
         } else {
             setStatus('error');
-            setServerMsg(result.message || 'Something went wrong. Please try again.');
         }
     };
 
@@ -138,10 +144,10 @@ export default function ContactSection() {
                         </span>
                         <h2 className="section-title font-display mb-5">
                             Let&apos;s build something{' '}
-                            <em className="font-serif italic text-brand">remarkable</em> together.
+                            <em className="font-serif italic text-brand">remarkable</em> together
                         </h2>
                         <p className="section-subtitle mb-12">
-                            Have a project in mind? Drop your query and we'll get back to you shortly.
+                            Have a project in mind? Drop your query and we'll get back to you shortly
                         </p>
 
                         <div className="flex flex-col gap-5 mb-8">
@@ -154,7 +160,6 @@ export default function ContactSection() {
                                     </svg>
                                 </div>
                                 <div>
-                                    <p className="text-xs text-(--color-ink-pale) uppercase tracking-wider mb-0.5">Visit us</p>
                                     <p className="text-sm font-semibold text-(--color-ink)">{BRAND.address.line1}</p>
                                     <p className="text-xs text-(--color-ink-ghost) mt-0.5">{BRAND.address.line2}</p>
                                 </div>
@@ -185,7 +190,7 @@ export default function ContactSection() {
                                 </div>
                                 <h3 className="font-display text-xl font-black text-(--color-ink)">Query submitted!</h3>
                                 <p className="text-(--color-ink-subtle) text-sm max-w-xs">
-                                    Thanks for reaching out. We'll review your query and get back to you within 24 hours.
+                                    Thank you for your interest, we will review your query and get back to you
                                 </p>
                                 <button onClick={() => setStatus('idle')} className="mt-2 text-sm font-semibold text-brand hover:underline">
                                     Submit another query
@@ -193,13 +198,6 @@ export default function ContactSection() {
                             </div>
                         ) : (
                             <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
-                                <div className="mb-1">
-                                    <h3 className="font-display text-xl font-black text-(--color-ink)">Send us your query</h3>
-                                    <p className="text-xs text-(--color-ink-pale) mt-1">
-                                        Responses are captured in our team sheet — we'll reply within 24h.
-                                    </p>
-                                </div>
-
                                 {/* Throttle warning */}
                                 {isThrottled && (
                                     <div className="flex items-start gap-2 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2.5">
@@ -283,14 +281,17 @@ export default function ContactSection() {
                                             <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.8" />
                                             <path d="M12 8v4m0 4h.01" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
                                         </svg>
-                                        <span>{serverMsg}</span>
+                                        <span>Something went wrong. Please try again.</span>
                                     </div>
                                 )}
 
                                 <button
                                     type="submit"
                                     disabled={submitDisabled}
-                                    className="btn btn-primary btn-full mt-1 disabled:opacity-60 disabled:cursor-not-allowed"
+                                    className={`btn btn-full mt-1 transition-all duration-200 ${!isFormValid || submitDisabled
+                                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                        : 'btn-primary cursor-pointer'
+                                        }`}
                                 >
                                     {status === 'submitting' ? (
                                         <span className="flex items-center justify-center gap-2">
@@ -305,10 +306,6 @@ export default function ContactSection() {
                                         : 'Submit Query →'
                                     }
                                 </button>
-
-                                <p className="text-center text-xs text-(--color-ink-dim)">
-                                    Your details are stored securely in our team's Google Sheet.
-                                </p>
                             </form>
                         )}
                     </div>
