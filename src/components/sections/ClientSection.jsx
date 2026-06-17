@@ -35,11 +35,11 @@ export default function ClientSection() {
                 </div>
 
                 {/* Heading */}
-                <div ref={headingRef} className="mt-6 mb-16 text-right">
+                <div ref={headingRef} className="mt-6 mb-16">
                     <h2 className="section-title font-display">
                         Great work starts with
                         <br />
-                        <em className="font-serif italic text-brand">strong partnerships.</em>
+                        <em className="font-serif italic text-brand">strong partnerships</em>
                     </h2>
                 </div>
 
@@ -47,7 +47,7 @@ export default function ClientSection() {
                 <div
                     ref={placeholderRef}
                     className="rounded-2xl border border-dashed border-[#d1d5e0] bg-[#f8f9fc]
-                     flex items-center justify-center py-20"
+                    flex items-center justify-center py-20"
                 >
                     <p className="font-body text-xs font-semibold tracking-[0.18em] uppercase text-[#b0b8cc]">
                         Client Stories Coming Soon
