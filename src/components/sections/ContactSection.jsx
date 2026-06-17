@@ -190,7 +190,7 @@ export default function ContactSection() {
                                 </div>
                                 <h3 className="font-display text-xl font-black text-(--color-ink)">Query submitted!</h3>
                                 <p className="text-(--color-ink-subtle) text-sm max-w-xs">
-                                    Thanks for reaching out. We'll review your query and get back to you within 24 hours
+                                    Thank you for your interest, we will review your query and get back to you
                                 </p>
                                 <button onClick={() => setStatus('idle')} className="mt-2 text-sm font-semibold text-brand hover:underline">
                                     Submit another query
