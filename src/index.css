@@ -321,6 +321,25 @@
     padding: 0.875rem 1.25rem;
   }
 
+  /* ── Section typography ──────────────────────────────────────────────────── */
+
+  /* Fluid section heading — matches --text-h2 scale used in hero/careers */
+  .section-title {
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+  }
+
+  /* Muted lead paragraph beneath section headings */
+  .section-subtitle {
+    font-size: clamp(1rem, 1.5vw, 1.125rem);
+    line-height: 1.7;
+    color: var(--color-ink-soft);
+  }
+
   /* ── Badge / eyebrow ─────────────────────────────────────────────────────── */
 
   /* Shared pill used by section-eyebrow and .badge */
