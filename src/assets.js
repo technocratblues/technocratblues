@@ -33,7 +33,7 @@ export const HERO_HEADLINE = {
   line2: 'moves business',
   line3: 'forward',
   description:
-    'We turn ambitious ideas into dependable digital products, engineered to scale and built to endure',
+      'We turn ambitious ideas into dependable digital products, engineered to scale and built to endure',
 };
 
 // Services
@@ -65,18 +65,33 @@ export const ABOUT_VALUES = [
 ];
 
 // Contact
-export const CONTACT_FORM = {
-  scriptUrl: import.meta.env.VITE_CONTACT_SCRIPT_URL,
+export const CONTACT_HEADLINE = {
+  badge: 'Get In Touch',
+  line1: 'Have a project',
+  line2: 'in mind?',
+  description:
+      'We’re always excited to discuss new ideas, collaborations, or opportunities. Drop us an email and we’ll get back to you shortly',
+  cardTitle: 'Email Us',
+  cardDescription:
+      'Have a project in mind? Let’s discuss your ideas and build something remarkable together',
+  cta: 'Send us an Email',
 };
 
-export const CONTACT_DOMAINS = [
-  'Web Development',
-  'Mobile Development',
-  'AI / ML Integration',
-  'Product Architecture',
-  'Tech Consulting',
-  'Other',
+export const CONTACT_HIGHLIGHTS = [
+  { icon: 'bolt',  title: 'Quick Response',        desc: 'We usually reply within 24 hours' },
+  { icon: 'users', title: 'Meaningful Discussions', desc: 'Let’s understand your goals' },
+  { icon: 'star',  title: 'New Opportunities',      desc: 'Projects, partnerships or just ideas' },
 ];
+
+// Contact email is hardcoded here (single source of truth)
+const CONTACT_ADDRESS = 'contact@technocratblues.com';
+
+// Only the recipient is prefilled; the sender writes their own subject and message.
+export const CONTACT_EMAIL = {
+  address: CONTACT_ADDRESS,
+  mailto: `mailto:${CONTACT_ADDRESS}`,
+  gmail: `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(CONTACT_ADDRESS)}`,
+};
 
 // Social / External Links
 export const SOCIAL_LINKS = {
@@ -149,7 +164,7 @@ export const CAREERS_LISTINGS = [
     location:    'Remote / Baner, Pune',
     experience:  '3–6 Years',
     description:
-      'We are looking for a passionate Full Stack Developer who loves building scalable, high-performance web applications and great user experiences.',
+        'We are looking for a passionate Full Stack Developer who loves building scalable, high-performance web applications and great user experiences.',
 
     skillGroups: [
       {
@@ -197,7 +212,7 @@ export const CAREERS_LISTINGS = [
     location:    'Remote / Baner, Pune',
     experience:  '2–5 Years',
     description:
-      'We are looking for a talented Mobile Developer to craft beautiful, performant cross-platform apps that delight users on every screen.',
+        'We are looking for a talented Mobile Developer to craft beautiful, performant cross-platform apps that delight users on every screen.',
 
     skillGroups: [
       {
